@@ -1,0 +1,2 @@
+rootProject.name = "GetDownToQuizness"
+include ':app'
