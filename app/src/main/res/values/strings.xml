@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">GetDownToQuizness</string>
+
+    <!-- Edit text ID -->
+    <string name="txtUsername">User Name</string>
+    <string name="txtPassword">Password</string>
+    <string name="txtRetypePassword">Retype Password</string>
+    <string name="txtEmail">Email</string>
+    <string name="txtPhone">Phone</string>
+
+    <!-- Button ID -->
+    <string name="btnLogin">Login</string>
+    <string name="btnSignMeUp">Sign me up!</string>
+    <string name="btnSignUp">Signup</string>
+    <string name="btnBack">Back</string>
+
+    <!-- Errors Text -->
+    <string name="login_successful">Login Successful</string>
+    <string name="Dashboard_text">Dashboard</string>
+    <string name="TextWelcome">Welcome username</string>
+
+    <!-- Errors Text -->
+    <string name="name_error">Enter a valid user name</string>
+    <string name="email_error">Enter a valid email</string>
+    <string name="password_error">Enter a valid password (Min. 8 char, 1 Uppercase, 1 number)</string>
+    <string name="rePassword_error">Reenter password</string>
+    <string name="phone_error">Enter a valid phone number</string>
 </resources>
