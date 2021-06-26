@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:paddingTop="50dp"
+    android:background="@drawable/background1"
+    tools:context=".SplashActivity">
+
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/app_logo2" />
+
+        <TextView
+            android:id="@+id/splashText"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:foregroundGravity="left"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:text="Get Down to Quizness! - V1.00 - Beta1"
+            android:textColor="@color/black" />
+
+
+
+</RelativeLayout>
