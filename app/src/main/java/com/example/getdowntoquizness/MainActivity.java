@@ -78,11 +78,13 @@ public class MainActivity extends AppCompatActivity {
                     // Go to welcome screen if authorized
                     if(userData.isAdmin(username_entered)) {
                         Intent I = new Intent(context, AdminActivity.class);
+                        I.putExtra("data", userData);
                         I.putExtra("username", username_entered);
                         startActivity(I);
                     }
                     else{
                         Intent I = new Intent(context, StudentActivity.class);
+                        I.putExtra("data", userData);
                         I.putExtra("username", username_entered);
                         startActivity(I);
                     }
