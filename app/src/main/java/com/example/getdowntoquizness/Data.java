@@ -56,26 +56,24 @@ public class Data implements Serializable {
     public Boolean CheckCredentials(String username, String Password){
         Boolean  retval = true;
         int index = getIndex(username);
-        System.out.println("Index: " + index);
-        System.out.println("username:" + usersList.get(index).get("username"));
-        System.out.println("password:" + usersList.get(index).get("password"));
         if (!CheckUsername(username) || !usersList.get(index).get("password").equals(Password)){
             retval = false;
         }
 
         return retval;
     }
+
     public int getIndex(String userName){
         int index = -1;
         //System.out.println("usersList size: " + usersList.size());
         for(int i = 0; i < usersList.size(); i++){
-            //System.out.println("HIHIHIHIHIHIHIHIHIH");
             if(usersList.get(i).get("username").equals(userName) ){
                 index = i;
             }
         }
         return index;
     }
+
     public boolean isStudent(String name){
         int index = getIndex(name);
         boolean student = false;
@@ -84,6 +82,7 @@ public class Data implements Serializable {
         }
         return student;
     }
+
     public boolean isAdmin(String name){
         int index = getIndex(name);
         boolean admin = false;
@@ -104,18 +103,26 @@ public class Data implements Serializable {
         return usersList.size();
     }
 
-    public String[] getAllStudents(){
+    public ArrayList<String> getAllStudentsArray(){
         ArrayList<String> students = new ArrayList<>();
         for(int index = 0; index < usersList.size(); index++){
             if(usersList.get(index).get("role").equals("student")){
                 students.add(usersList.get(index).get("username"));
             }
         }
-        String [] studentsArray = new String[students.size()];
-        for(int index = 0; index < students.size(); index++){
-            studentsArray[index] = students.get(index);
+        return students;
+    }
+
+    public ArrayList<HashMap<String, String>> getAllStudentsListView(){
+        ArrayList<HashMap<String, String>> allStudents = new ArrayList<>();
+
+        for(int index = 0; index < getAllStudentsArray().size(); index++){
+            HashMap<String, String> student = new HashMap<>();
+                student.put("studentName", getAllStudentsArray().get(index));
+                allStudents.add(student);
         }
-        return studentsArray;
+
+        return allStudents;
     }
 }
 

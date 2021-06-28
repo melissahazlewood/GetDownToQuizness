@@ -28,10 +28,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_layout);
 
+
         context = getApplicationContext();
 
         Intent intent = getIntent();                    //getting the intent's data
         data = (Data) intent.getSerializableExtra("data"); //assigning data to data
+
+        System.out.println("All students signup: " + data.getAllStudentsArray());
+
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);// selecting the validation style
         enableReenterPassword();                        // Calling the enableReenterPassword method

@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         wiringUp();                                     //Calling wiringUp method
         signUpSelected();                               //Calling signUpSelected method
         loginSelected();                                //Calling loginSelected method
+        //System.out.println("Main all students: " + userData.getAllStudentsArray());
     }
 
     //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -37,7 +38,14 @@ public class MainActivity extends AppCompatActivity {
         m_btnSignUp = findViewById(R.id.btnSignup);
         mEditUsername = findViewById(R.id.txtUsername);
         mEditPassword = findViewById(R.id.txtPassword);
+
         userData = new Data();
+
+        Intent intent = getIntent();
+        if((Data) intent.getSerializableExtra("data") != null){
+            userData = (Data) intent.getSerializableExtra("data");
+        }
+
         context = getApplicationContext();
         numLoginTries = 0;                         //To count the number of unsuccessful login tries
     }
