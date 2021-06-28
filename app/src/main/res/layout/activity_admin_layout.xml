@@ -7,9 +7,23 @@
     android:gravity="center"
     tools:context=".AdminActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnManageAcc"
+        android:layout_width="185dp"
         android:layout_height="wrap_content"
-        android:text="Admin"/>
+        android:text="Manage Student  Accounts"/>
+    <Button
+        android:id="@+id/btnCreateQuiz"
+        android:layout_width="185dp"
+        android:layout_height="wrap_content"
+        android:text="Create a Quiz"
+        android:layout_below="@+id/btnManageAcc"/>
+    <Button
+        android:id="@+id/btnAssignQuiz"
+        android:layout_width="185dp"
+        android:layout_height="wrap_content"
+        android:text="Assign a Quiz"
+        android:layout_below="@+id/btnCreateQuiz"/>
+
 
 </RelativeLayout>
