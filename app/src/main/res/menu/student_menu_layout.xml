@@ -4,40 +4,40 @@
 
 
     <item
-        android:id="@+id/menu_home"
+        android:id="@+id/menu_student_home"
         android:icon="@mipmap/ic_menu_home"
         app:showAsAction="ifRoom"
         android:title="Home"/>
 
     <item
-        android:id="@+id/menu_name"
+        android:id="@+id/menu_student_name"
         android:icon="@android:drawable/ic_dialog_info"
         app:showAsAction="never"
         android:title="Student/User name"/>
 
 
     <item
-        android:id="@+id/menu_logout"
+        android:id="@+id/menu_student_logout"
         app:showAsAction="never"
         android:title="Log out"/>
 
     <item
-        android:id="@+id/menu_editProfile"
+        android:id="@+id/menu_student_editProfile"
         app:showAsAction="never"
         android:title="Edit profile"/>
 
     <item
-        android:id="@+id/menu_changePassword"
+        android:id="@+id/menu_student_changePassword"
         app:showAsAction="never"
         android:title="Change password"/>
 
     <item
-        android:id="@+id/menu_help"
+        android:id="@+id/menu_student_help"
         app:showAsAction="never"
         android:title="Help"/>
 
     <item
-        android:id="@+id/menu_about"
+        android:id="@+id/menu_student_about"
         app:showAsAction="never"
         android:title="About"/>
 

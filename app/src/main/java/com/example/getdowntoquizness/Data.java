@@ -99,5 +99,23 @@ public class Data implements Serializable {
         }
         return allNames;
     }
+
+    public int getSize(){
+        return usersList.size();
+    }
+
+    public String[] getAllStudents(){
+        ArrayList<String> students = new ArrayList<>();
+        for(int index = 0; index < usersList.size(); index++){
+            if(usersList.get(index).get("role").equals("student")){
+                students.add(usersList.get(index).get("username"));
+            }
+        }
+        String [] studentsArray = new String[students.size()];
+        for(int index = 0; index < students.size(); index++){
+            studentsArray[index] = students.get(index);
+        }
+        return studentsArray;
+    }
 }
 

@@ -1,10 +1,12 @@
 package com.example.getdowntoquizness;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import java.io.Serializable;
 
@@ -31,6 +33,26 @@ public class AdminActivity extends AppCompatActivity {
         }
 
         setTitle("Admin: " + name);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId())
+        {
+            case R.id.menu_home:
+                // Toast ....
+                //return true;
+            case R.id.menu_admin_name:
+                //return true;
+            case R.id.menu_admin_logout:
+                //return true;
+            case R.id.menu_admin_quizArchive:
+                //return true;
+            case R.id.menu_admin_about:
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
