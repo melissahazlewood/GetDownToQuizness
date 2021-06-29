@@ -3,8 +3,8 @@ package com.example.getdowntoquizness;
 public class User {
     // Fields
     int userID; //TODO: add to constructor, add getter, and add setter?
-    String username;
     String name;
+    String username;
     String password;
     String retypePassword;
     String email;
@@ -17,10 +17,11 @@ public class User {
 
     }
 
-    public User(String username, String name, String password, String retypePassword, String email,
-                Boolean isAdmin) {
-        this.username = username;
+    public User(String name, String username, String password, String retypePassword, String email,
+                Boolean isAdmin)
+    {
         this.name = name;
+        this.username = username;
         this.password = password;
         this.retypePassword = retypePassword;
         this.email = email;
@@ -28,11 +29,11 @@ public class User {
     }
 
     // Setters
-    public void setUsername(String username) {
-        this.username = username;
-    }
     public void setName(String name) {
         this.name = name;
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
     public void setPassword(String password) {
         this.password = password;
@@ -48,11 +49,11 @@ public class User {
     }
 
     // Getters
-    public String getUsername() {
-        return this.username;
-    }
     public String getName() {
         return this.name;
+    }
+    public String getUsername() {
+        return this.username;
     }
     public String getPassword() {
         return this.password;

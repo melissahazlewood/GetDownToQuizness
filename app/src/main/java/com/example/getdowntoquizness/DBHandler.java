@@ -17,8 +17,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // User Table Information
     public static final String USER_COLUMN_ID = "user_id"; //TODO: make into a common column named "id" for use in all tables?
-    public static final String USER_COLUMN_USERNAME = "user_username";
     public static final String USER_COLUMN_NAME = "user_name";
+    public static final String USER_COLUMN_USERNAME = "user_username";
     public static final String USER_COLUMN_PASSWORD = "user_password";
     public static final String USER_COLUMN_RETYPE_PASSWORD = "user_retype_password";
     public static final String USER_COLUMN_EMAIL = "user_email";
@@ -35,12 +35,12 @@ public class DBHandler extends SQLiteOpenHelper {
     // Table Create Statements
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + USER_TABLE_NAME + " ( " +
             USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            USER_COLUMN_USERNAME + "TEXT, " +
-            USER_COLUMN_NAME + "TEXT, " +
-            USER_COLUMN_PASSWORD + "TEXT, " +
-            USER_COLUMN_RETYPE_PASSWORD + "TEXT, " +
-            USER_COLUMN_EMAIL + "TEXT, " +
-            USER_COLUMN_IS_ADMIN + "BOOLEAN )"; //TODO: add phone, quiz, and grade cols
+            USER_COLUMN_NAME + " TEXT, " +
+            USER_COLUMN_USERNAME + " TEXT, " +
+            USER_COLUMN_PASSWORD + " TEXT, " +
+            USER_COLUMN_RETYPE_PASSWORD + " TEXT, " +
+            USER_COLUMN_EMAIL + " TEXT, " +
+            USER_COLUMN_IS_ADMIN + " BOOLEAN )"; //TODO: add phone, quiz, and grade cols
     //TODO: make create statement for quiz table
     //TODO: make create statement for question table
 
@@ -89,10 +89,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void addUserHandler(User user) {
         ContentValues values = new ContentValues();
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        values.put(USER_COLUMN_USERNAME, user.getUsername());
         values.put(USER_COLUMN_NAME, user.getName());
+        values.put(USER_COLUMN_USERNAME, user.getUsername());
         values.put(USER_COLUMN_PASSWORD, user.getPassword());
         values.put(USER_COLUMN_RETYPE_PASSWORD, user.getRetypePassword());
         values.put(USER_COLUMN_EMAIL, user.getEmail());
@@ -100,6 +99,7 @@ public class DBHandler extends SQLiteOpenHelper {
         //TODO: add phone number to values possibly
         //TODO: add quizzes and grades
 
+        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(USER_TABLE_NAME, null, values);
         db.close();
     }

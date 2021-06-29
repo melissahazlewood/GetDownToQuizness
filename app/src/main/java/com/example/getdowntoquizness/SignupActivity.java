@@ -15,14 +15,13 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
     // Declaring variables
     private Button m_btnSignMeUp;
-    private EditText mName, mUsername, mPassword, mRetypePassword;
+    private EditText mName, mUsername, mPassword, mRetypePassword, mEmail;
     Context context;
     private AwesomeValidation mAwesomeValidation;
     Data data;
@@ -108,8 +107,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view){
         if(view == m_btnSignMeUp){
+            mName = findViewById(R.id.txtName);
             mUsername = findViewById(R.id.txtUsername);
             mPassword = findViewById(R.id.txtPassword);
+            mRetypePassword = findViewById(R.id.txtRetypePassword);
+            mEmail = findViewById(R.id.txtEmail);
 
             // checks if the username already exist  in the hashmap.
             boolean userExist = data.CheckUsername(mUsername.getText().toString());
@@ -126,6 +128,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, Gravity.CENTER,Gravity.CENTER);
                 toast.show();
+
+                // Add new user info to the users table in the database
+                addUser();
             }
             // If all fields are valid but the user exists
             else if(mAwesomeValidation.validate() && userExist){
@@ -141,4 +146,30 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    public void addUser(Boolean isAdmin) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                DBHandler db = new DBHandler(context);
+                String name = mName.getText().toString();
+                String username = mUsername.getText().toString();
+                String password = mPassword.getText().toString();
+                String retypePassword = mRetypePassword.getText().toString();
+                String email = mEmail.getText().toString();
+                User user = new User(name, username, password, retypePassword, email, isAdmin);
+
+                db.addUserHandler(user);
+            }
+        });
+
+        executor.shutdown();
+        //TODO: clear all edit texts
+    }
+
+    public void addUser() {
+        addUser(false);
+        //TODO: make an addAdmin with isAdmin = true
+    }
 }
