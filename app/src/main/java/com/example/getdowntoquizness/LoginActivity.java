@@ -11,7 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+public class LoginActivity extends AppCompatActivity {
     //Declaring variables
     private Button m_btnSignUp;
     private Button m_btnLogin;
@@ -39,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         mEditUsername = findViewById(R.id.txtUsername);
         mEditPassword = findViewById(R.id.txtPassword);
 
-        userData = new Data(); //TODO: do we need this?
+        userData = new Data();
 
         Intent intent = getIntent();
-        if((Data) intent.getSerializableExtra("data") != null){ //TODO: do we need this either?
+        if((Data) intent.getSerializableExtra("data") != null){
             userData = (Data) intent.getSerializableExtra("data");
         }
 
@@ -73,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                username_entered = mEditUsername.getText().toString();
-                password_entered = mEditPassword.getText().toString();
+//                username_entered = mEditUsername.getText().toString();
+//                password_entered = mEditPassword.getText().toString();
 
                 Intent intent = getIntent();     //getting the intent in case user already signed up
                 if(intent.hasExtra("data")) {//if there is data variable retrieved through the intent
@@ -82,20 +87,33 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Check credentials
-                if (userData.CheckCredentials(username_entered, password_entered)) {
+                //TODO TODO TODO
+//                if (userData.CheckCredentials(username_entered, password_entered)) {
+//                    // Go to welcome screen if authorized
+//                    if(userData.isAdmin(username_entered)) {
+//                        Intent I = new Intent(context, AdminActivity.class);
+//                        I.putExtra("data", userData);
+//                        I.putExtra("username", username_entered);
+//                        startActivity(I);
+//                    }
+//                    else{
+//                        Intent I = new Intent(context, StudentActivity.class);
+//                        I.putExtra("data", userData);
+//                        I.putExtra("username", username_entered);
+//                        startActivity(I);
+//                    }
+//                }
+                if (checkCredentials()) {
                     // Go to welcome screen if authorized
-                    if(userData.isAdmin(username_entered)) {
+                    if(isAdmin()) {
                         Intent I = new Intent(context, AdminActivity.class);
-                        I.putExtra("data", userData);
-                        I.putExtra("username", username_entered);
                         startActivity(I);
                     }
                     else{
                         Intent I = new Intent(context, StudentActivity.class);
-                        I.putExtra("data", userData);
-                        I.putExtra("username", username_entered);
                         startActivity(I);
                     }
+
                 }
                 //if more than three unsuccessful attempts
                 else if (numLoginTries >= 3) {
@@ -114,5 +132,50 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public Boolean checkCredentials() {
+        Boolean result = false;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<Boolean> future = executor.submit(() -> {
+            DBHandler db = new DBHandler(context);
+            String username = mEditUsername.getText().toString();
+            String password = mEditPassword.getText().toString();
+
+            return db.checkCredentialsHandler(username, password);
+        });
+
+        try {
+            result = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+        //TODO: clear all edit texts
+        return result;
+    }
+
+    public Boolean isAdmin() {
+        Boolean result = false;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<Boolean> future = executor.submit(() -> {
+            DBHandler db = new DBHandler(context);
+            String username = mEditUsername.getText().toString();
+
+            return db.isAdminHandler(username);
+        });
+
+        try {
+            result = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+        //TODO: clear all edit texts
+        return result;
     }
 }

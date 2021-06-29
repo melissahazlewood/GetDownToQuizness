@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -136,7 +134,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 // Add new user info to the users table in the database
                 addUser();
 
-                Intent intent = new Intent(context, MainActivity.class);
+                Intent intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);
             }
             // If all fields are valid but the user exists
@@ -144,10 +142,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 mUsername.requestFocus();   // set cursor focused on the username edit text box
                 mUsername.selectAll();      // selects all text on the username edit text box
 
-                Toast toast = Toast.makeText(context, "Username already exist. Try a different username.",
-                        Toast.LENGTH_SHORT);
-//                toast.setGravity(Gravity.CENTER, Gravity.CENTER,Gravity.CENTER);
-                toast.show();
+                Toast.makeText(context, "Username already exists. Try a different username.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -156,19 +151,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void addUser(Boolean isAdmin) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                DBHandler db = new DBHandler(context);
-                String name = mName.getText().toString();
-                String username = mUsername.getText().toString();
-                String password = mPassword.getText().toString();
-                String retypePassword = mRetypePassword.getText().toString();
-                String email = mEmail.getText().toString();
-                User user = new User(name, username, password, retypePassword, email, isAdmin);
+        executor.execute(() -> {
+            DBHandler db = new DBHandler(context);
+            String name = mName.getText().toString();
+            String username = mUsername.getText().toString();
+            String password = mPassword.getText().toString();
+            String retypePassword = mRetypePassword.getText().toString();
+            String email = mEmail.getText().toString();
+            User user = new User(name, username, password, retypePassword, email, isAdmin);
 
-                db.addUserHandler(user);
-            }
+            db.addUserHandler(user);
         });
 
         executor.shutdown();
@@ -180,7 +172,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         //TODO: make an addAdmin with isAdmin = true
     }
 
-    //TODO: checkUsername
     public Boolean usernameExists() {
         Boolean result = false;
         ExecutorService executor = Executors.newSingleThreadExecutor();

@@ -119,4 +119,37 @@ public class DBHandler extends SQLiteOpenHelper {
         return found;
     }
 
+    public Boolean checkCredentialsHandler(String username, String password) {
+        Boolean isCorrect = false;
+        String query = "SELECT " + USER_COLUMN_PASSWORD + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_USERNAME + " = '" + username + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            //TODO: figure out how to check the current username-row's password
+            if (cursor.getString(0).equals(password))
+                isCorrect = true;
+            cursor.close();
+        }
+
+        db.close();
+        return isCorrect;
+    }
+
+    public boolean isAdminHandler(String username) {
+        boolean isAdmin = false;
+        String query = "SELECT " + USER_COLUMN_IS_ADMIN + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_USERNAME + " = '" + username + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            //TODO: figure out how to check the admin value
+            if (cursor.getInt(0) == 1)
+                isAdmin = true;
+            cursor.close();
+        }
+
+        db.close();
+        return isAdmin;
+    }
 }
