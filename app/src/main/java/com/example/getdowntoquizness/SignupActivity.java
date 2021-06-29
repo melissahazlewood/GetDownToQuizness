@@ -22,7 +22,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mUsername, mPassword, mRetypePassword;
     Context context;
     private AwesomeValidation mAwesomeValidation;
-    Data data;
+    private Data data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

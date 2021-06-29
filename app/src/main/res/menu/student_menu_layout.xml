@@ -10,13 +10,6 @@
         android:title="Home"/>
 
     <item
-        android:id="@+id/menu_student_name"
-        android:icon="@android:drawable/ic_dialog_info"
-        app:showAsAction="never"
-        android:title="Student/User name"/>
-
-
-    <item
         android:id="@+id/menu_student_logout"
         app:showAsAction="never"
         android:title="Log out"/>
