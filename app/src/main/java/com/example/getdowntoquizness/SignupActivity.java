@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
     // Declaring variables
     private Button m_btnSignMeUp;
-    private EditText mUsername, mPassword, mRetypePassword;
+    private EditText mName, mUsername, mPassword, mRetypePassword;
     Context context;
     private AwesomeValidation mAwesomeValidation;
     Data data;
@@ -139,4 +139,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
+
+
 }
