@@ -8,7 +8,6 @@ public class Data implements Serializable {
 
     ArrayList <HashMap<String, String>> usersList;
 
-
     public Data(){
         usersList = new ArrayList<>();
         HashMap<String, String> hmCredentials = new HashMap<>();

@@ -14,7 +14,7 @@ import android.widget.Button;
 
 import java.io.Serializable;
 
-public class AdminActivity extends AppCompatActivity implements CommunicatorManageAcc{
+public class AdminActivity extends AppCompatActivity implements CommunicatorManageAcc {
     private Data userData;
     private String name;
     private Button btnManageAcc, btnCreateQuiz, btnAssignQuiz;
