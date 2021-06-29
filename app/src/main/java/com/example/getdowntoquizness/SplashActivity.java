@@ -13,7 +13,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_layout);
-        int SPLASH_TIME_OUT = 1000; //TODO: change to 2000 or 2500 when we're done coding
+        int SPLASH_TIME_OUT = 0; //TODO: change to 2000 or 2500 when we're done coding
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override

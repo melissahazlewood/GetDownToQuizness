@@ -12,8 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.Serializable;
-
 public class AdminActivity extends AppCompatActivity implements CommunicatorManageAcc {
     private Data userData;
     private String name;
