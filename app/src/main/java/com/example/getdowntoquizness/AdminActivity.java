@@ -30,7 +30,6 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
         setContentView(R.layout.activity_admin_layout);
 
 //        setScreenTitle();
-        startHomeFragment();
 //        setBtnManageAccListener();
         btnCreateQuiz = findViewById(R.id.btnCreateQuiz);
         btnAssignQuiz = findViewById(R.id.btnAssignQuiz);
@@ -40,6 +39,8 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
             this.currentUsername = intent.getStringExtra(ARG_CURRENT_USERNAME);
             setTitle("Admin: " + currentUsername);
         }
+
+        startHomeFragment();
 
     }
 
