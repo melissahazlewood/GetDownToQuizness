@@ -44,15 +44,15 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
 
     }
 
-    public void setBtnManageAccListener(){
-        btnManageAcc = findViewById(R.id.btnManageAcc);
-        btnManageAcc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passDataAdminToManageAcc(userData);
-            }
-        });
-    }
+//    public void setBtnManageAccListener(){
+//        btnManageAcc = findViewById(R.id.btnManageAcc);
+//        btnManageAcc.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                passDataAdminToManageAcc(userData);
+//            }
+//        });
+//    }
 
     public void setScreenTitle(){
         Intent intent = getIntent();
@@ -125,6 +125,10 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
         fm.beginTransaction()
                 .replace(R.id.fragment_container, AdminManageMainFragment.newInstance(currentUsername), null)
                 .commit();
+    }
+
+    public void removeStudentSelected(View view) {
+        //TODO
     }
 
     @Override

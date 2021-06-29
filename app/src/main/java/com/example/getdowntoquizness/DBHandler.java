@@ -5,6 +5,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class DBHandler extends SQLiteOpenHelper {
     // Database Information
     private static final int DATABASE_VERSION = 1;
@@ -47,7 +51,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        initializeFirstAdmin();
+
+        if (isEmptyUserTable())
+            initializeFirstAdmin();
     }
 
     @Override
@@ -68,6 +74,14 @@ public class DBHandler extends SQLiteOpenHelper {
         //TODO: add the first admin
         User userAdmin = new User("N/A", "user-admin", "1234", "1234", "N/A", true);
         addUserHandler(userAdmin);
+    }
+
+    public boolean isEmptyUserTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + USER_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+
+        return !cursor.moveToFirst();
     }
 
     public String loadUsersHandler() {
@@ -158,5 +172,23 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
         return isAdmin;
+    }
+
+    public ArrayList<HashMap<String, String>> getStudentsListHandler() {
+        String query = "SELECT " + USER_COLUMN_USERNAME + ", " + USER_COLUMN_NAME + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_IS_ADMIN + " = '" + 0 + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            HashMap<String, String> student = new HashMap<>();
+            student.put("studentUsername", cursor.getString(0));
+            student.put("studentName", cursor.getString(1));
+            studentsList.add(student);
+        }
+        cursor.close();
+
+        db.close();
+        return studentsList;
     }
 }

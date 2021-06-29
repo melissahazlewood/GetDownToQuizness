@@ -16,8 +16,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 //TODO: implement user fragment interface
 
@@ -90,7 +95,6 @@ public class AdminManageMainFragment extends UserFragment { //extends Fragment i
 ////                new String[] {"studentName"}, new int[] {R.id.txtStudent_list_name});
 ////        lv.setAdapter(adapter);
 //
-//        //TODO: set student list adapter
 //
 //
 //        return view;
@@ -109,7 +113,13 @@ public class AdminManageMainFragment extends UserFragment { //extends Fragment i
 //        lv.setAdapter(adapter);
 
         //TODO: set student list adapter
-
+//        view.findViewById(R.id.checkBox_studentsList).setVisibility(View.INVISIBLE);
+        ArrayList<HashMap<String, String>> studentsList = getStudentsList();
+        ListView lv = view.findViewById(R.id.LV_studentsList);
+        ListAdapter adapter = new SimpleAdapter(getContext(), studentsList, R.layout.students_list_layout,
+                new String[] {"studentName", "studentUsername"},
+                new int[] {R.id.txtStudent_list_name, R.id.txtStudent_list_username});
+        lv.setAdapter(adapter);
 
         return view;
     }
@@ -131,4 +141,24 @@ public class AdminManageMainFragment extends UserFragment { //extends Fragment i
 //        super.onDetach();
 //        mCommunicatorManageAcc = null;
 //    }
+
+    public ArrayList<HashMap<String, String>> getStudentsList() {
+        ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<ArrayList<HashMap<String, String>>> future = executor.submit(() -> {
+            DBHandler db = new DBHandler(getContext());
+            return db.getStudentsListHandler();
+        });
+
+        try {
+            studentsList = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+        return studentsList;
+    }
+
 }
