@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +15,10 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
     // Declaring variables
     private Button m_btnSignMeUp;
@@ -23,6 +26,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     Context context;
     private AwesomeValidation mAwesomeValidation;
     Data data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
