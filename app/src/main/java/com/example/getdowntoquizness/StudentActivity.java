@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,24 +12,38 @@ import android.view.MenuItem;
 public class StudentActivity extends AppCompatActivity {
     private Data userData;
     private String name;
+    private String currentUsername;
+
+    private final static String ARG_CURRENT_USERNAME = "currentUsername";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_layout);
 
-        setScreenTitle();
+        Intent intent = getIntent(); //TODO: put this code block into a function like setScreenTitle() ?
+        if (intent.hasExtra(ARG_CURRENT_USERNAME)) {
+            this.currentUsername = intent.getStringExtra(ARG_CURRENT_USERNAME);
+            setTitle("Student: " + currentUsername);
+        }
 
+//        setScreenTitle();
     }
 
     public void setScreenTitle(){
-        Intent intent = getIntent();
-        if(intent.hasExtra("data")){
-            userData = (Data) intent.getSerializableExtra("data");
-        }
-        if(intent.hasExtra("username")){
-            name = (String) intent.getSerializableExtra("username");
-        }
+//        Intent intent = getIntent();
+//        if(intent.hasExtra("data")){
+//            userData = (Data) intent.getSerializableExtra("data");
+//        }
+//        if(intent.hasExtra("username")){
+//            name = (String) intent.getSerializableExtra("username");
+//        }
+
         setTitle("Student: " + name);
+
+        //TODO: figure out how to best represent and send data between activities
+//        DBHandler db = new DBHandler(this);
+//        String username = db.
     }
 
     @Override

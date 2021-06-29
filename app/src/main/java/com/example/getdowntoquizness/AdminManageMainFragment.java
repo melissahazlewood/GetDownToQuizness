@@ -19,13 +19,28 @@ import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//TODO: implement user fragment interface
 
 public class AdminManageMainFragment extends Fragment {
     private Data usersData;
     private CommunicatorManageAcc mCommunicatorManageAcc;
 
+    private String currentUsername;
+
+    private final static String ARG_CURRENT_USERNAME = "currentUsername";
+
     public AdminManageMainFragment() {
         // Required empty public constructor
+    }
+
+    public static AdminManageMainFragment newInstance(String currentUsername) {
+        AdminManageMainFragment fragment = new AdminManageMainFragment();
+        fragment.currentUsername = currentUsername;
+
+        Bundle args = new Bundle();
+        args.putString(ARG_CURRENT_USERNAME, currentUsername);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -35,6 +50,7 @@ public class AdminManageMainFragment extends Fragment {
             usersData = (Data) getArguments().getSerializable("data");
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
+            currentUsername = getArguments().getString(ARG_CURRENT_USERNAME);
         }
         else{
             System.out.println("No Students data");
@@ -47,13 +63,13 @@ public class AdminManageMainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_admin_manage_main_layout, container, false);
 
-        ArrayList<HashMap<String,String>> studentsList = usersData.getAllStudentsListView();
-        ListView lv = view.findViewById(R.id.LV_studentsList);
-        ListAdapter adapter = new SimpleAdapter(getContext(), studentsList, R.layout.students_list_layout,
-                new String[] {"studentName"}, new int[] {R.id.txtStudent_list_name});
-        lv.setAdapter(adapter);
+//        ArrayList<HashMap<String,String>> studentsList = usersData.getAllStudentsListView();
+//        ListView lv = view.findViewById(R.id.LV_studentsList);
+//        ListAdapter adapter = new SimpleAdapter(getContext(), studentsList, R.layout.students_list_layout,
+//                new String[] {"studentName"}, new int[] {R.id.txtStudent_list_name});
+//        lv.setAdapter(adapter);
 
-
+        //TODO: set student list adapter
 
         return view;
     }

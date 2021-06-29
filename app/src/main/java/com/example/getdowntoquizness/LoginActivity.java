@@ -25,6 +25,9 @@ public class LoginActivity extends AppCompatActivity {
     private String username_entered, password_entered;
     Context context;
     private int numLoginTries;
+
+    private static final String ARG_CURRENT_USERNAME = "currentUsername";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,13 +84,12 @@ public class LoginActivity extends AppCompatActivity {
 //                username_entered = mEditUsername.getText().toString();
 //                password_entered = mEditPassword.getText().toString();
 
-                Intent intent = getIntent();     //getting the intent in case user already signed up
-                if(intent.hasExtra("data")) {//if there is data variable retrieved through the intent
-                    userData = (Data) intent.getSerializableExtra("data");//Assigning data to data
-                }
+//                Intent intent = getIntent();     //getting the intent in case user already signed up
+//                if(intent.hasExtra("data")) {//if there is data variable retrieved through the intent
+//                    userData = (Data) intent.getSerializableExtra("data");//Assigning data to data
+//                }
 
                 // Check credentials
-                //TODO TODO TODO
 //                if (userData.CheckCredentials(username_entered, password_entered)) {
 //                    // Go to welcome screen if authorized
 //                    if(userData.isAdmin(username_entered)) {
@@ -105,12 +107,15 @@ public class LoginActivity extends AppCompatActivity {
 //                }
                 if (checkCredentials()) {
                     // Go to welcome screen if authorized
+                    String currentUsername = mEditUsername.getText().toString();
                     if(isAdmin()) {
                         Intent I = new Intent(context, AdminActivity.class);
+                        I.putExtra(ARG_CURRENT_USERNAME, currentUsername);
                         startActivity(I);
                     }
                     else{
                         Intent I = new Intent(context, StudentActivity.class);
+                        I.putExtra(ARG_CURRENT_USERNAME, currentUsername);
                         startActivity(I);
                     }
 

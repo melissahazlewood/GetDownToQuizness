@@ -47,6 +47,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        initializeFirstAdmin();
     }
 
     @Override
@@ -61,6 +62,12 @@ public class DBHandler extends SQLiteOpenHelper {
         // On upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
         //TODO: insert other two drop table statements
+    }
+
+    public void initializeFirstAdmin() {
+        //TODO: add the first admin
+        User userAdmin = new User("N/A", "user-admin", "1234", "1234", "N/A", true);
+        addUserHandler(userAdmin);
     }
 
     public String loadUsersHandler() {

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminActivity">
+
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/fragContAdminManageAcc"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+        <Button
+            android:id="@+id/btnManageAcc"
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Manage Student Accounts"
+            android:onClick="startManageAccountsFragment"/>
+        <Button
+            android:id="@+id/btnCreateQuiz"
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:text="Create a Quiz"
+            android:layout_below="@+id/btnManageAcc"/>
+        <Button
+            android:id="@+id/btnAssignQuiz"
+            android:layout_width="185dp"
+            android:layout_height="wrap_content"
+            android:text="Assign a Quiz"
+            android:layout_below="@+id/btnCreateQuiz"/>
+
+    </RelativeLayout>
+</RelativeLayout>
