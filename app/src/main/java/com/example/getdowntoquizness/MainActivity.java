@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
         mEditUsername = findViewById(R.id.txtUsername);
         mEditPassword = findViewById(R.id.txtPassword);
 
-        userData = new Data();
+        userData = new Data(); //TODO: do we need this?
 
         Intent intent = getIntent();
-        if((Data) intent.getSerializableExtra("data") != null){
+        if((Data) intent.getSerializableExtra("data") != null){ //TODO: do we need this either?
             userData = (Data) intent.getSerializableExtra("data");
         }
 

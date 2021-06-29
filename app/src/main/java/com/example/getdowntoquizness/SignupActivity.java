@@ -15,8 +15,11 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
     // Declaring variables
@@ -114,32 +117,36 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             mEmail = findViewById(R.id.txtEmail);
 
             // checks if the username already exist  in the hashmap.
-            boolean userExist = data.CheckUsername(mUsername.getText().toString());
+//            boolean userExists = data.CheckUsername(mUsername.getText().toString());
+            boolean userExists = usernameExists();
 
             // If all fields are valid and username does not exist
-            if(mAwesomeValidation.validate() && !userExist) {
-                //adds the username and password to the hashmap
-                data.AddCredential(mUsername.getText().toString(), mPassword.getText().toString(), "student");
-                //creates an intent to the main activity
-                Intent intent = new Intent(context, MainActivity.class);
-                intent.putExtra("data", data);    // sends data through the intent
-                startActivity(intent);                  //starts the main activity
-                Toast toast = Toast.makeText(context, "Signup successful.",
-                        Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, Gravity.CENTER,Gravity.CENTER);
-                toast.show();
+            if(mAwesomeValidation.validate() && !userExists) {
+//                //adds the username and password to the hashmap
+//                data.AddCredential(mUsername.getText().toString(), mPassword.getText().toString(), "student");
+//                //creates an intent to the main activity
+//                Intent intent = new Intent(context, MainActivity.class);
+//                intent.putExtra("data", data);    // sends data through the intent
+//                startActivity(intent);                  //starts the main activity
+//                Toast toast = Toast.makeText(context, "Signup successful.",
+//                        Toast.LENGTH_SHORT);
+//                toast.setGravity(Gravity.CENTER, Gravity.CENTER,Gravity.CENTER);
+//                toast.show();
 
                 // Add new user info to the users table in the database
                 addUser();
+
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
             }
             // If all fields are valid but the user exists
-            else if(mAwesomeValidation.validate() && userExist){
+            else if(mAwesomeValidation.validate() && userExists){
                 mUsername.requestFocus();   // set cursor focused on the username edit text box
                 mUsername.selectAll();      // selects all text on the username edit text box
 
                 Toast toast = Toast.makeText(context, "Username already exist. Try a different username.",
                         Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, Gravity.CENTER,Gravity.CENTER);
+//                toast.setGravity(Gravity.CENTER, Gravity.CENTER,Gravity.CENTER);
                 toast.show();
             }
         }
@@ -171,5 +178,28 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void addUser() {
         addUser(false);
         //TODO: make an addAdmin with isAdmin = true
+    }
+
+    //TODO: checkUsername
+    public Boolean usernameExists() {
+        Boolean result = false;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<Boolean> future = executor.submit(() -> {
+            DBHandler db = new DBHandler(context);
+            String username = mUsername.getText().toString();
+
+            return db.checkUsernameHandler(username);
+        });
+
+
+        try {
+            result = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+        return result;
     }
 }

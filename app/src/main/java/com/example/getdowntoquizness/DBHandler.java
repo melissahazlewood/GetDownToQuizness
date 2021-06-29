@@ -104,4 +104,19 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public Boolean checkUsernameHandler(String username) {
+        Boolean found = true;
+        String query = "SELECT * FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_USERNAME + " = '" + username + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst())
+            cursor.close();
+        else
+            found = false;
+
+        db.close();
+        return found;
+    }
+
 }
