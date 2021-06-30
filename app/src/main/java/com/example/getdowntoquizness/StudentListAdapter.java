@@ -14,12 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class StudentListAdapter extends RecyclerView.Adapter<MyViewHolder> {
-//    ArrayList<AdminManageMainFragment.StudentListItem> studentList;
 
-    private LayoutInflater inflater;
-//    ArrayList<String> studentNames;
-//    ArrayList<CheckBox> checkBoxes;
     Context context;
+    private LayoutInflater inflater;
     private ArrayList<AdminManageMainFragment.StudentListItem> studentList;
 
 
@@ -27,16 +24,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<MyViewHolder> {
         this.studentList = studentList;
         this.context = context;
         inflater = LayoutInflater.from(context);
-//        this.checkBoxes = new ArrayList<>();
-//        for (String ignored : studentNames)
-//            this.checkBoxes.add(new CheckBox(context));
     }
-
-//    public StudentListAdapter(Context context, ArrayList<String> studentNames, ArrayList<CheckBox> checkBoxes) {
-//        this.studentNames = studentNames;
-////        this.checkBoxes = checkBoxes;
-//        this.context = context;
-//    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -51,10 +39,6 @@ public class StudentListAdapter extends RecyclerView.Adapter<MyViewHolder> {
         try {
             holder.tvStudentName.setText(studentList.get(position).getStudentName());
             holder.checkBox.setChecked(studentList.get(position).getSelected());
-//        holder.checkBox = checkBoxes.get(position); //TODO: is this the right context?
-
-//        holder.checkBox.setOnCheckedChangeListener(null);
-//        holder.checkBox.setChecked(.isSelected());
 
             holder.checkBox.setTag(position);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
