@@ -1,6 +1,6 @@
 package com.example.getdowntoquizness;
 
-public class CurrentData extends Data { //TODO: actually, do I need this class?
+public class CurrentData extends Data { //TODO: probably delete
     // Fields
     String currentUsername;
     //TODO:

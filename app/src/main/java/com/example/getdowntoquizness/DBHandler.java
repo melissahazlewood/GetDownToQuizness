@@ -174,22 +174,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return isAdmin;
     }
 
-//    public ArrayList<HashMap<String, String>> getStudentsListHandler() {
-//        String query = "SELECT " + USER_COLUMN_NAME + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_IS_ADMIN + " = '" + 0 + "'";
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//        ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
-//
-//        while (cursor.moveToNext()) {
-//            HashMap<String, String> student = new HashMap<>();
-//            student.put("studentName", cursor.getString(0));
-//            studentsList.add(student);
-//        }
-//        cursor.close();
-//
-//        db.close();
-//        return studentsList;
-//    }
 
     public ArrayList<String> getStudentsListHandler() {
         String query = "SELECT " + USER_COLUMN_NAME + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_IS_ADMIN + " = '" + 0 + "'";
