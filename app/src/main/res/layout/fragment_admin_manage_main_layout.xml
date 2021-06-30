@@ -25,12 +25,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ListView
-        android:id="@+id/LV_studentsList"
+<!--    <ListView-->
+<!--        android:id="@+id/LV_studentsList"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_below="@+id/admin_manageAccTitle"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/btnRemoveStudent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/admin_manageAccTitle" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RV_studentsList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/admin_manageAccTitle"
-        app:layout_constraintBottom_toTopOf="@+id/btnRemoveStudent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,12 +50,14 @@
         android:id="@+id/btnRemoveStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="470dp"
         android:text="Remove Student"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RV_studentsList" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+    </LinearLayout>

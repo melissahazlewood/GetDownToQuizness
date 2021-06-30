@@ -9,49 +9,76 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
-public class StudentListAdapter extends ArrayAdapter<AdminManageMainFragment.StudentListItem> implements View.OnClickListener {
-    ArrayList<AdminManageMainFragment.StudentListItem> studentList;
+public class StudentListAdapter extends RecyclerView.Adapter<MyViewHolder> {
+//    ArrayList<AdminManageMainFragment.StudentListItem> studentList;
+
+    private LayoutInflater inflater;
+//    ArrayList<String> studentNames;
+//    ArrayList<CheckBox> checkBoxes;
     Context context;
+    private ArrayList<AdminManageMainFragment.StudentListItem> studentList;
 
-    private static class ViewHolder {
-        TextView txtName;
-        CheckBox checkBox;
-    }
 
-    public StudentListAdapter(ArrayList<AdminManageMainFragment.StudentListItem> studentList, Context context) {
-        super(context, R.layout.students_list_layout, studentList);
+    public StudentListAdapter(Context context, ArrayList<AdminManageMainFragment.StudentListItem> studentList) {
         this.studentList = studentList;
         this.context = context;
+        inflater = LayoutInflater.from(context);
+//        this.checkBoxes = new ArrayList<>();
+//        for (String ignored : studentNames)
+//            this.checkBoxes.add(new CheckBox(context));
+    }
+
+//    public StudentListAdapter(Context context, ArrayList<String> studentNames, ArrayList<CheckBox> checkBoxes) {
+//        this.studentNames = studentNames;
+////        this.checkBoxes = checkBoxes;
+//        this.context = context;
+//    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View v = inflater.inflate(R.layout.students_list_layout, parent, false);
+        return new MyViewHolder(v);
     }
 
     @Override
-    public void onClick(View view) {
-        Toast.makeText(context, "Clicked a student", Toast.LENGTH_SHORT);
-    }
+    public void onBindViewHolder(MyViewHolder holder, int position)
+    {
+        try {
+            holder.tvStudentName.setText(studentList.get(position).getStudentName());
+            holder.checkBox.setChecked(studentList.get(position).getSelected());
+//        holder.checkBox = checkBoxes.get(position); //TODO: is this the right context?
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        AdminManageMainFragment.StudentListItem studentListItem = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
+//        holder.checkBox.setOnCheckedChangeListener(null);
+//        holder.checkBox.setChecked(.isSelected());
 
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.students_list_layout, parent, false);
-            viewHolder.txtName = (TextView) convertView.findViewById(R.id.txtStudent_list_name);
-            viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox_studentsList);
+            holder.checkBox.setTag(position);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Integer position = (Integer) holder.checkBox.getTag();
 
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+                    Toast.makeText(context, studentList.get(position).getStudentName(), Toast.LENGTH_LONG).show();
+
+                    if (studentList.get(position).getSelected()) { //TODO: is the logic right here?
+                        studentList.get(position).setSelected(false);
+                    } else {
+                        studentList.get(position).setSelected(true);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        viewHolder.txtName.setText(studentListItem.getStudentName());
-
-        return convertView;
+    @Override
+    public int getItemCount()
+    {
+        return studentList.size();
     }
 }
