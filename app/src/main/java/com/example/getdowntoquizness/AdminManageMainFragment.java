@@ -105,8 +105,6 @@ public class AdminManageMainFragment extends UserFragment {
         rv.setLayoutManager(llm);
         rv.setAdapter(adapter);
 
-//        selectedStudents = adapter.getStudentsToDelete(); //TODO: hmmm
-
         return view;
     }
 
@@ -129,20 +127,6 @@ public class AdminManageMainFragment extends UserFragment {
         return studentsList;
     }
 
-//    public void removeSelectedStudents(View view) {
-//        System.out.println(getSelectedStudents());
-//    }
-
-    public void onCheckBoxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-        // Check which checkbox was clicked
-    }
-
-//    public ArrayList<String> getSelectedStudents() {
-//        return selectedStudents;
-//    }
 
     @Override
     public void onAttach(Context context) {
