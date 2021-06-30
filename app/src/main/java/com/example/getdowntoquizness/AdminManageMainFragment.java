@@ -12,13 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +32,36 @@ import java.util.concurrent.Future;
 public class AdminManageMainFragment extends UserFragment { //extends Fragment implements UserFragment {
     private Data usersData;
     private CommunicatorManageAcc mCommunicatorManageAcc;
+
+    ArrayList<StudentListItem> studentListItems;
+    ListView lv;
+    private static StudentListAdapter studentListAdapter;
+
+    public class StudentListItem {
+        String studentName;
+        CheckBox checkBox;
+
+        public StudentListItem(String studentName, CheckBox checkBox) {
+            this.studentName = studentName;
+            this.checkBox = checkBox;
+        }
+
+        public void setStudentName(String studentName) {
+            this.studentName = studentName;
+        }
+
+        public void setCheckBox(CheckBox checkBox) {
+            this.checkBox = checkBox;
+        }
+
+        public String getStudentName() {
+            return studentName;
+        }
+
+        public CheckBox getCheckBox() {
+            return checkBox;
+        }
+    }
 
 //    private String currentUsername;
 //
@@ -81,6 +114,14 @@ public class AdminManageMainFragment extends UserFragment { //extends Fragment i
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TODO: show "no student data" if no student users in table
+//        lv = getActivity().findViewById(R.id.LV_studentsList);
+//        ArrayList<String> studentList = getStudentsList();
+//        studentListItems = new ArrayList<>();
+//        for (String student : studentList) {
+//            studentListItems.add(new StudentListItem(student, new CheckBox(getActivity().getApplicationContext())));
+//        }
+//        studentListAdapter = new StudentListAdapter(studentListItems, getContext());
+//        lv.setAdapter(studentListAdapter);
     }
 
 //    @Override
@@ -114,14 +155,44 @@ public class AdminManageMainFragment extends UserFragment { //extends Fragment i
 
         //TODO: set student list adapter
 //        view.findViewById(R.id.checkBox_studentsList).setVisibility(View.INVISIBLE);
-        ArrayList<HashMap<String, String>> studentsList = getStudentsList();
-        ListView lv = view.findViewById(R.id.LV_studentsList);
-        ListAdapter adapter = new SimpleAdapter(getContext(), studentsList, R.layout.students_list_layout,
-                new String[] {"studentName", "studentUsername"},
-                new int[] {R.id.txtStudent_list_name, R.id.txtStudent_list_username});
-        lv.setAdapter(adapter);
+//        ArrayList<HashMap<String, String>> studentsList = getStudentsList();
+
+//        ArrayList<String> studentsList = getStudentsList();
+//        ListView lv = view.findViewById(R.id.LV_studentsList);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), R.layout.students_list_layout, studentsList);
+//        lv.setAdapter(adapter);
+
+
+        lv = view.findViewById(R.id.LV_studentsList);
+        ArrayList<String> studentList = getStudentsList();
+        studentListItems = new ArrayList<>();
+        for (String student : studentList) {
+            studentListItems.add(new StudentListItem(student, new CheckBox(this.getContext())));
+        }
+        studentListAdapter = new StudentListAdapter(studentListItems, getContext());
+        lv.setAdapter(studentListAdapter);
+
 
         return view;
+    }
+
+    public ArrayList<String> getStudentsList() {
+        ArrayList<String> studentsList = new ArrayList<>();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<ArrayList<String>> future = executor.submit(() -> {
+            DBHandler db = new DBHandler(getContext());
+            return db.getStudentsListHandler();
+        });
+
+        try {
+            studentsList = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+        return studentsList;
     }
 
 //    @Override
@@ -142,23 +213,23 @@ public class AdminManageMainFragment extends UserFragment { //extends Fragment i
 //        mCommunicatorManageAcc = null;
 //    }
 
-    public ArrayList<HashMap<String, String>> getStudentsList() {
-        ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-
-        Future<ArrayList<HashMap<String, String>>> future = executor.submit(() -> {
-            DBHandler db = new DBHandler(getContext());
-            return db.getStudentsListHandler();
-        });
-
-        try {
-            studentsList = future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        executor.shutdown();
-        return studentsList;
-    }
+//    public ArrayList<HashMap<String, String>> getStudentsList() {
+//        ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//
+//        Future<ArrayList<HashMap<String, String>>> future = executor.submit(() -> {
+//            DBHandler db = new DBHandler(getContext());
+//            return db.getStudentsListHandler();
+//        });
+//
+//        try {
+//            studentsList = future.get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//
+//        executor.shutdown();
+//        return studentsList;
+//    }
 
 }
