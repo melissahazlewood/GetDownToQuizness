@@ -36,7 +36,7 @@ public class OptionsMenuActivityAdmin extends AppCompatActivity implements Commu
                 showMessage("Home");
                 if(fragmentTemp != null){
                     showButtons();
-                    fm.popBackStack();
+                    fm.beginTransaction().remove(fragmentTemp).commit();
                 }
                 break;
                 //return true;
