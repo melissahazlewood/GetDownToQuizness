@@ -1,5 +1,6 @@
 package com.example.getdowntoquizness;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,19 +23,18 @@ public class AdminManageMainFragment extends UserFragment {
 //    private CommunicatorManageAcc mCommunicatorManageAcc;
 
     ArrayList<StudentListItem> studentList;
-    ArrayList<String> studentNames;
+    ArrayList<HashMap<String, String>> studentNamesUsernamesAndSelectedStatus;
+    ArrayList<HashMap<String, String>> selectedStudents;
 
     public class StudentListItem {
         String studentName;
         boolean isSelected;
+        String studentUsername;
 
-        public StudentListItem(String studentName, Boolean isSelected) {
+        public StudentListItem(String studentName, boolean isSelected, String studentUsername) {
             this.studentName = studentName;
             this.isSelected = isSelected;
-        }
-
-        public void setStudentName(String studentName) {
-            this.studentName = studentName;
+            this.studentUsername = studentUsername;
         }
 
         public void setSelected(boolean isSelected) {
@@ -45,6 +47,10 @@ public class AdminManageMainFragment extends UserFragment {
 
         public boolean getSelected() {
             return isSelected;
+        }
+
+        public String getStudentUsername() {
+            return studentUsername;
         }
     }
 
@@ -86,26 +92,30 @@ public class AdminManageMainFragment extends UserFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_admin_manage_main_layout, container, false);
 
-        studentNames = getStudentsList();
+        studentNamesUsernamesAndSelectedStatus = getStudentsList();
         studentList = new ArrayList<>();
-        for (String student : studentNames) {
-            studentList.add(new StudentListItem(student, false));
+        for (HashMap<String, String> student : studentNamesUsernamesAndSelectedStatus) {
+            studentList.add(new StudentListItem(student.get("name"), false, student.get("username")));
         }
+
+        //TODO: why wont my recyclerview show up??
+        StudentListAdapter adapter = new StudentListAdapter(this.getContext(), studentList);
         RecyclerView rv = view.findViewById(R.id.RV_studentsList);
-        LinearLayoutManager llm =  new LinearLayoutManager(requireContext().getApplicationContext());
+        LinearLayoutManager llm =  new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(llm);
-        StudentListAdapter adapter = new StudentListAdapter(getContext(), studentList);
         rv.setAdapter(adapter);
+
+//        selectedStudents = adapter.getStudentsToDelete(); //TODO: hmmm
 
         return view;
     }
 
-    public ArrayList<String> getStudentsList() {
-        ArrayList<String> studentsList = new ArrayList<>();
+    public ArrayList<HashMap<String, String>> getStudentsList() {
+        ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        Future<ArrayList<String>> future = executor.submit(() -> {
-            DBHandler db = new DBHandler(getContext());
+        Future<ArrayList<HashMap<String, String>>> future = executor.submit(() -> {
+            DBHandler db = new DBHandler(getActivity());
             return db.getStudentsListHandler();
         });
 
@@ -117,6 +127,35 @@ public class AdminManageMainFragment extends UserFragment {
 
         executor.shutdown();
         return studentsList;
+    }
+
+//    public void removeSelectedStudents(View view) {
+//        System.out.println(getSelectedStudents());
+//    }
+
+    public void onCheckBoxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+    }
+
+//    public ArrayList<String> getSelectedStudents() {
+//        return selectedStudents;
+//    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        AdminActivity adminActivity;
+
+        if (context instanceof AdminActivity){
+            adminActivity = (AdminActivity) context;
+
+            //TODO: turn this into a listener so it can update as changes are made
+//            adminActivity.selectedStudents = getSelectedStudents();
+        }
     }
 
 //    @Override
@@ -135,7 +174,9 @@ public class AdminManageMainFragment extends UserFragment {
 //    public void onDetach() {
 //        super.onDetach();
 //        mCommunicatorManageAcc = null;
-//    }
+
+
+
 
 
 }

@@ -158,7 +158,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             String password = mPassword.getText().toString();
             String retypePassword = mRetypePassword.getText().toString();
             String email = mEmail.getText().toString();
-            User user = new User(name, username, password, retypePassword, email, isAdmin);
+            User user = new User(name, username, password, retypePassword, email, isAdmin, false);
 
             db.addUserHandler(user);
         });

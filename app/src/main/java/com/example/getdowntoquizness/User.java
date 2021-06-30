@@ -9,6 +9,7 @@ public class User {
     String retypePassword;
     String email;
     Boolean isAdmin;
+    Boolean isSelected;
     //TODO: add phone number possibly + getters/setters/constructor
     //TODO: add the quiz and grade info + getters/setters/constructor
 
@@ -18,7 +19,7 @@ public class User {
     }
 
     public User(String name, String username, String password, String retypePassword, String email,
-                Boolean isAdmin)
+                Boolean isAdmin, Boolean isSelected)
     {
         this.name = name;
         this.username = username;
@@ -26,6 +27,7 @@ public class User {
         this.retypePassword = retypePassword;
         this.email = email;
         this.isAdmin = isAdmin;
+        this.isSelected = isSelected;
     }
 
     // Setters
@@ -47,6 +49,9 @@ public class User {
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
+    public void setIsSelected(Boolean selected) {
+        isSelected = selected;
+    }
 
     // Getters
     public String getName() {
@@ -66,5 +71,8 @@ public class User {
     }
     public Boolean getIsAdmin() {
         return this.isAdmin;
+    }
+    public Boolean getIsSelected() {
+        return isSelected;
     }
 }

@@ -12,6 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 //TODO: make a generic interface "user" fragment with start home fragment virtual methods
 public class AdminActivity extends AppCompatActivity implements CommunicatorManageAcc {
     private Data userData;
@@ -19,6 +25,8 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
     private Button btnManageAcc, btnCreateQuiz, btnAssignQuiz;
 
     FragmentManager fm = getSupportFragmentManager();
+
+    ArrayList<String> selectedStudents;
 
     private String currentUsername;
 
@@ -122,13 +130,51 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
     }
 
     public void startManageAccountsFragment(View view) {
+        selectedStudents = new ArrayList<>();
         fm.beginTransaction()
                 .replace(R.id.fragment_container, AdminManageMainFragment.newInstance(currentUsername), null)
                 .commit();
     }
 
-    public void removeStudentSelected(View view) {
-        //TODO
+    public void removeSelectedStudents(View view) {
+        selectedStudents = getSelectedStudents();
+        if (selectedStudents != null) {
+            System.out.println(selectedStudents);
+
+            //remove selected students from DB and update UI
+            removeSelectedStudentsFromDB(selectedStudents);
+            startManageAccountsFragment(view); //TODO: hopefully updates UI?
+        }
+    }
+
+    public ArrayList<String> getSelectedStudents() {
+        ArrayList<String> selectedStudentsList = new ArrayList<>();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        Future<ArrayList<String>> future = executor.submit(() -> {
+            DBHandler db = new DBHandler(getApplicationContext());
+            return db.getSelectedHandler();
+        });
+
+        try {
+            selectedStudentsList = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        executor.shutdown();
+        return selectedStudentsList;
+    }
+
+    public void removeSelectedStudentsFromDB(ArrayList<String> selectedStudents) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        executor.execute(() -> {
+            DBHandler db = new DBHandler(getApplicationContext());
+            db.removeSelectedStudentsHandler(selectedStudents);
+        });
+
+        executor.shutdown();
     }
 
     @Override

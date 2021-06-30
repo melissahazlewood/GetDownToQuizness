@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,6 +26,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String USER_COLUMN_RETYPE_PASSWORD = "user_retype_password";
     public static final String USER_COLUMN_EMAIL = "user_email";
     public static final String USER_COLUMN_IS_ADMIN = "user_is_admin";
+    public static final String USER_COLUMN_IS_SELECTED = "user_is_selected";
     //TODO: add phone number column?
     //TODO: add quiz and grade columns
 
@@ -44,7 +44,8 @@ public class DBHandler extends SQLiteOpenHelper {
             USER_COLUMN_PASSWORD + " TEXT, " +
             USER_COLUMN_RETYPE_PASSWORD + " TEXT, " +
             USER_COLUMN_EMAIL + " TEXT, " +
-            USER_COLUMN_IS_ADMIN + " BOOLEAN )"; //TODO: add phone, quiz, and grade cols
+            USER_COLUMN_IS_ADMIN + " BOOLEAN, " +
+            USER_COLUMN_IS_SELECTED + " BOOLEAN )"; //TODO: add phone, quiz, and grade cols
     //TODO: make create statement for quiz table
     //TODO: make create statement for question table
 
@@ -71,8 +72,8 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void initializeFirstAdmin() {
-        //TODO: add the first admin
-        User userAdmin = new User("N/A", "user-admin", "1234", "1234", "N/A", true);
+        // Add the first admin user
+        User userAdmin = new User("N/A", "user-admin", "1234", "1234", "N/A", true, false);
         addUserHandler(userAdmin);
     }
 
@@ -99,6 +100,7 @@ public class DBHandler extends SQLiteOpenHelper {
             String result_5 = cursor.getString(5);
             String result_6 = cursor.getString(6);
             result += result_0 + result_1 + result_2 + result_3 + result_4 + result_5 + result_6 + System.lineSeparator();
+            //TODO: add boolean columns?
             //TODO: add phone number possibly
             //TODO: add quizzes and grades
         }
@@ -117,6 +119,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(USER_COLUMN_RETYPE_PASSWORD, user.getRetypePassword());
         values.put(USER_COLUMN_EMAIL, user.getEmail());
         values.put(USER_COLUMN_IS_ADMIN, user.getIsAdmin());
+        values.put(USER_COLUMN_IS_SELECTED, user.getIsSelected());
         //TODO: add phone number to values possibly
         //TODO: add quizzes and grades
 
@@ -147,7 +150,6 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
-            //TODO: figure out how to check the current username-row's password
             if (cursor.getString(0).equals(password))
                 isCorrect = true;
             cursor.close();
@@ -164,7 +166,6 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
-            //TODO: figure out how to check the admin value
             if (cursor.getInt(0) == 1)
                 isAdmin = true;
             cursor.close();
@@ -175,18 +176,77 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<String> getStudentsListHandler() {
-        String query = "SELECT " + USER_COLUMN_NAME + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_IS_ADMIN + " = '" + 0 + "'";
+    public ArrayList<HashMap<String, String>> getStudentsListHandler() {
+        String query = "SELECT " + USER_COLUMN_NAME + ", " + USER_COLUMN_USERNAME + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_IS_ADMIN + " = '" + 0 + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        ArrayList<String> studentsList = new ArrayList<>();
+        ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
 
-        while (cursor.moveToNext()) {
-            studentsList.add(cursor.getString(0));
-        }
+        cursor.moveToFirst();
+        do {
+            HashMap<String, String> student = new HashMap<>();
+            student.put("name", cursor.getString(0));
+            student.put("username", cursor.getString(1));
+            studentsList.add(student);
+        } while (cursor.moveToNext());
         cursor.close();
 
         db.close();
         return studentsList;
+    }
+
+    public void removeSelectedStudentsHandler(ArrayList<String> selectedStudentUsernames) {
+        for (String student : selectedStudentUsernames)
+            removeStudentHandler(student);
+    }
+
+    public void removeStudentHandler(String studentUsername) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(USER_TABLE_NAME, USER_COLUMN_USERNAME + " = '" + studentUsername + "'", null);
+        db.close();
+    }
+
+    public boolean isSelectedHandler(String username) {
+        //TODO: maybe combine boolean handlers into a generic method since they're so similar
+        boolean isSelected = false;
+        String query = "SELECT " + USER_COLUMN_IS_SELECTED + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_USERNAME + " = '" + username + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            if (cursor.getInt(0) == 1)
+                isSelected = true;
+            cursor.close();
+        }
+
+        db.close();
+        return isSelected;
+    }
+
+    public void setSelectedHandler(boolean isSelected, String username) {
+        int isSelectedAsInt = 0;
+        if (isSelected) isSelectedAsInt = 1;
+
+        String query = "UPDATE " + USER_TABLE_NAME + " SET " + USER_COLUMN_IS_SELECTED + " = '" + isSelectedAsInt + "' WHERE " + USER_COLUMN_USERNAME + " = '" + username + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+        db.close();
+    }
+
+    public ArrayList<String> getSelectedHandler() {
+        String query = "SELECT " + USER_COLUMN_USERNAME + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_IS_SELECTED + " = '" + 1 + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<String> selectedStudentsList = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            selectedStudentsList.add(cursor.getString(0));
+        }
+        cursor.close();
+
+        db.close();
+        System.out.println("selectedStudentsList: " + selectedStudentsList);
+        return selectedStudentsList;
     }
 }

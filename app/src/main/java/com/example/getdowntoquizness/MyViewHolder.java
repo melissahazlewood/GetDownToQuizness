@@ -20,4 +20,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
         checkBox = itemView.findViewById(R.id.checkBox_studentsList);
     }
 
+    public void bindData(AdminManageMainFragment.StudentListItem viewModel) {
+        tvStudentName.setText(viewModel.getStudentName());
+        checkBox.setChecked(viewModel.getSelected());
+    }
+
 }
