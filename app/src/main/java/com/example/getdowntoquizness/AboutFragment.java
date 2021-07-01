@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class AboutFragment extends Fragment {
+public class AboutFragment extends UserFragment {
     private TextView txtViewAbout;
     public AboutFragment() {
         // Required empty public constructor

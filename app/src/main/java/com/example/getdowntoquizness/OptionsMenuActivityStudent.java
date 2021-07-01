@@ -41,7 +41,7 @@ public class OptionsMenuActivityStudent extends AppCompatActivity {
                 break;
             case R.id.menu_student_logout:
                 showMessage("You logged out successfully");
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_student_editProfile:
