@@ -1,12 +1,7 @@
 package com.example.getdowntoquizness;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class AdminActivity extends AppCompatActivity implements CommunicatorManageAcc {
+public class AdminActivity extends OptionsMenuActivityAdmin implements CommunicatorManageAcc{
     private Data userData;
     private String name;
     private Button btnManageAcc, btnCreateQuiz, btnAssignQuiz;
@@ -76,8 +71,9 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
         setTitle("Admin: " + name);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//    @Override
+//<<<<<<< HEAD
+    public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId())
         {
@@ -86,13 +82,25 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
                 //return true;
                 startHomeFragment(findViewById(R.id.fragment_container));
                 break;
-            case R.id.menu_admin_name:
-                //return true;
             case R.id.menu_admin_logout:
                 //return true;
-            case R.id.menu_admin_quizArchive:
+                showMessage("You logged out successfully");
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_admin_help:
                 //return true;
+                showMessage("Help");
+                Fragment fragmentTemp = new HelpFragment();
+                fm.beginTransaction().replace(R.id.fragment_container, fragmentTemp)
+                        .addToBackStack(null).commit();
+                break;
             case R.id.menu_admin_about:
+                showMessage("About");
+                fragmentTemp = new AboutFragment();
+                fm.beginTransaction().replace(R.id.fragment_container, fragmentTemp)
+                        .addToBackStack(null).commit();
+                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -103,8 +111,10 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
         getMenuInflater().inflate(R.menu.admin_menu_layout, menu);
         return true;
     }
-
-    @Override
+//
+//    @Override
+//=======
+//>>>>>>> AlBranch
     public void passDataAdminToManageAcc(Data data) {
 //        FragmentManager fm = getSupportFragmentManager();
 //        Fragment fragmentAdminMA = fm.findFragmentById(R.id.fragContAdminManageAcc);

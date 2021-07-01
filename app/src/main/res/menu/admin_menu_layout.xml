@@ -7,11 +7,6 @@
         android:icon="@mipmap/ic_menu_home"
         app:showAsAction="ifRoom"
         android:title="Home"/>
-    <item
-        android:id="@+id/menu_admin_name"
-        android:icon="@android:drawable/ic_dialog_info"
-        app:showAsAction="never"
-        android:title="Admin/Admin name"/>
 
     <item
         android:id="@+id/menu_admin_logout"
@@ -19,11 +14,11 @@
         app:showAsAction="never"
         android:title="Log out"/>
 
-    <item
-        android:id="@+id/menu_admin_quizArchive"
-        android:icon="@android:drawable/ic_dialog_info"
-        app:showAsAction="never"
-        android:title="Quiz Archive"/>
+<!--    <item-->
+<!--        android:id="@+id/menu_admin_quizArchive"-->
+<!--        android:icon="@android:drawable/ic_dialog_info"-->
+<!--        app:showAsAction="never"-->
+<!--        android:title="Quiz Archive"/>-->
 
     <item
         android:id="@+id/menu_admin_help"

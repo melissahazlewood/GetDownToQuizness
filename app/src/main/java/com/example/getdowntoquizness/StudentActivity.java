@@ -2,29 +2,44 @@ package com.example.getdowntoquizness;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.example.getdowntoquizness.main.SectionsPagerAdapter;
+import com.example.getdowntoquizness.databinding.ActivityStudentLayoutBinding;
+import com.google.android.material.tabs.TabLayout;
 
-public class StudentActivity extends AppCompatActivity {
+public class StudentActivity extends OptionsMenuActivityStudent {
     private Data userData;
     private String name;
     private String currentUsername;
 
     private final static String ARG_CURRENT_USERNAME = "currentUsername";
 
+    private ActivityStudentLayoutBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_layout);
-
+        
         Intent intent = getIntent(); //TODO: put this code block into a function like setScreenTitle() ?
         if (intent.hasExtra(ARG_CURRENT_USERNAME)) {
             this.currentUsername = intent.getStringExtra(ARG_CURRENT_USERNAME);
             setTitle("Student: " + currentUsername);
         }
+//        setScreenTitle();
+        binding = ActivityStudentLayoutBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = binding.viewPager;
+        viewPager.setAdapter(sectionsPagerAdapter);
+        TabLayout tabs = binding.tabs;
+        tabs.setupWithViewPager(viewPager);
 
 //        setScreenTitle();
     }
@@ -45,31 +60,5 @@ public class StudentActivity extends AppCompatActivity {
 //        String username = db.
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_student_home:
 
-            case R.id.menu_student_name:
-
-            case R.id.menu_student_logout:
-
-            case R.id.menu_student_editProfile:
-
-            case R.id.menu_student_changePassword:
-
-            case R.id.menu_student_help:
-
-            case R.id.menu_student_about:
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //return super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.student_menu_layout, menu);
-        return true;
-    }
 }
