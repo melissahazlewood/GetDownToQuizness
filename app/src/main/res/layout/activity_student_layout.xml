@@ -7,7 +7,7 @@
     android:gravity="center"
     tools:context=".StudentActivity">
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/studenTitle"
+        android:id="@+id/studentTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/teal_700"
@@ -25,7 +25,12 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/studenTitle"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+        android:layout_below="@+id/studentTitle"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+    </androidx.viewpager.widget.ViewPager>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragContStudent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/studentTitle"/>
 </RelativeLayout>
