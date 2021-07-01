@@ -343,8 +343,65 @@ public class DBHandler extends SQLiteOpenHelper {
     //TODO: delete bc this is just for practice
     // INSERT INTO QUIZ_TABLE_NAME (QUIZ_COLUMN_TOPIC) VALUES ('Science')
 
+    public int getLastQuizID() {
+        String query = "SELECT MAX(" + QUIZ_COLUMN_ID + ") AS max_id FROM " + QUIZ_TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        int id = 0;
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                id = cursor.getInt(0);
+            } while(cursor.moveToNext());
+        }
+        return id;
+    }
+
+    public void addQuizHandler(String name, String topic, int timeLimit, ArrayList<QuizQuestion> questions) {
+        int thisQuizID = getLastQuizID() + 1;
+        for (QuizQuestion question : questions)
+            addQuizQuestionHandler(question,  thisQuizID++);
+
+        ContentValues values = new ContentValues();
+        values.put(QUIZ_COLUMN_NAME, name);
+        values.put(QUIZ_COLUMN_TOPIC, topic);
+        values.put(QUIZ_COLUMN_TIME_LIMIT, timeLimit);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(QUIZ_TABLE_NAME, null, values);
+        db.close();
+    }
+
+
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
     // QUESTION TABLE METHODS
+
+    public void addQuizQuestionHandler(QuizQuestion question, int quizID) {
+        //TODO: make this work with more than one correct answer... rn it doesn't because
+        // the correct answer column/field only accepts one value
+        String questionStatement = question.getQuestionText();
+        String answer1 = question.getAnswer1Text();
+        String answer2 = question.getAnswer2Text();
+        String answer3 = question.getAnswer3Text();
+        String answer4 = question.getAnswer4Text();
+        ArrayList<Integer> correctAnswerChoices = question.getCorrectAnswerChoices();
+
+        ContentValues values = new ContentValues();
+
+        values.put(QUESTION_COLUMN_QUESTION_STATEMENT, questionStatement);
+        values.put(QUESTION_COLUMN_ANSWER_CHOICE_1, answer1);
+        values.put(QUESTION_COLUMN_ANSWER_CHOICE_2, answer2);
+        values.put(QUESTION_COLUMN_ANSWER_CHOICE_3, answer3);
+        values.put(QUESTION_COLUMN_ANSWER_CHOICE_4, answer4);
+        values.put(QUESTION_COLUMN_CORRECT_ANSWER, correctAnswerChoices.get(0));
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(QUESTION_TABLE_NAME, null, values);
+        db.close();
+
+    }
 
 //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
     // STUDENT QUIZ STATS TABLE METHODS

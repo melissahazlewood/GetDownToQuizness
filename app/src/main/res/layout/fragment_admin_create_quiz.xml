@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/topicSpinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -34,30 +34,70 @@
             app:layout_constraintStart_toStartOf="@+id/txtQuizTitle"
             app:layout_constraintTop_toBottomOf="@+id/txtQuizTitle" />
 
+        <TextView
+            android:id="@+id/tvSelectCorrect"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Select Correct\nAnswer:"
+            app:layout_constraintBottom_toBottomOf="@+id/txtTimeLimit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtTimeLimit" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RV_QuizQuestions"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="84dp"
             android:isScrollContainer="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/tvSelectCorrect" />
 
         <Button
             android:id="@+id/btn_doneCreatingQuiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:text="Done"
             android:onClick="doneCreatingQuiz"
+            android:text="Done"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/txtTimeLimit"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTimeLimit"
+            app:layout_constraintStart_toEndOf="@+id/tvTimeLimit"
+            app:layout_constraintTop_toTopOf="@+id/tvTimeLimit" />
+
+        <TextView
+            android:id="@+id/tvTimeLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Time\nLimit:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topicSpinner" />
+
+        <TextView
+            android:id="@+id/tvMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="min"
+            app:layout_constraintBottom_toBottomOf="@+id/txtTimeLimit"
+            app:layout_constraintStart_toEndOf="@+id/txtTimeLimit"
+            app:layout_constraintTop_toTopOf="@+id/txtTimeLimit" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

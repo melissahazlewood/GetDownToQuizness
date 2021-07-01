@@ -1,10 +1,12 @@
 package com.example.getdowntoquizness;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.CheckBox;
 
 import java.util.ArrayList;
 
-public class QuizQuestion {
+public class QuizQuestion implements Parcelable {
     String questionText;
     String answer1Text;
     String answer2Text;
@@ -45,6 +47,26 @@ public class QuizQuestion {
         this.checkBoxes = new ArrayList<>();
         this.correctCheckBoxChoices = new ArrayList<>();
     }
+
+    protected QuizQuestion(Parcel in) {
+        questionText = in.readString();
+        answer1Text = in.readString();
+        answer2Text = in.readString();
+        answer3Text = in.readString();
+        answer4Text = in.readString();
+    }
+
+    public static final Creator<QuizQuestion> CREATOR = new Creator<QuizQuestion>() {
+        @Override
+        public QuizQuestion createFromParcel(Parcel in) {
+            return new QuizQuestion(in);
+        }
+
+        @Override
+        public QuizQuestion[] newArray(int size) {
+            return new QuizQuestion[size];
+        }
+    };
 
     //Setters and getters for QuizQuestion fields
     public void setQuestionText(String questionText) {
@@ -114,5 +136,20 @@ public class QuizQuestion {
                 correctChoices.add(cb);
         }
         return correctChoices;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(questionText);
+        dest.writeString(answer1Text);
+        dest.writeString(answer2Text);
+        dest.writeString(answer3Text);
+        dest.writeString(answer4Text);
+        dest.writeArray(correctCheckBoxChoices.toArray());
     }
 }
