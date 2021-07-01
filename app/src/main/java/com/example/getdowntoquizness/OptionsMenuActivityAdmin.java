@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 public class OptionsMenuActivityAdmin extends AppCompatActivity implements CommunicatorManageAcc {
-    private CommunicatorManageAcc mCommunicatorManageAcc;
+    //private CommunicatorManageAcc mCommunicatorManageAcc;
     private Button btnManageAcc, btnCreateQuiz, btnAssignQuiz;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,12 +42,14 @@ public class OptionsMenuActivityAdmin extends AppCompatActivity implements Commu
                 //return true;
             case R.id.menu_admin_logout:
                 //return true;
-                showMessage("logout");
+                showMessage("You logged out successfully");
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 break;
-            case R.id.menu_admin_quizArchive:
-                //return true;
-                showMessage("quiz archive");
-                break;
+//            case R.id.menu_admin_quizArchive:
+//                //return true;
+//                showMessage("quiz archive");
+//                break;
             case R.id.menu_admin_help:
                 showMessage("Help");
                 hideButtons();

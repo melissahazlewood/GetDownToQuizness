@@ -6,10 +6,26 @@
     android:layout_height="match_parent"
     android:gravity="center"
     tools:context=".StudentActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/studenTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Student"/>
+        android:background="@color/teal_700"
+        android:theme="@style/ThemeOverlay.AppCompat.Light">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/black"
+            android:background="@color/teal_700"/>
+        <!--            android:background="?attr/colorPrimary" />-->
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/studenTitle"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </RelativeLayout>
