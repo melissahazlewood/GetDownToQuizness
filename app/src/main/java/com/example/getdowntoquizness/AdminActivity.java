@@ -3,7 +3,10 @@ package com.example.getdowntoquizness;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +21,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-//TODO: make a generic interface "user" fragment with start home fragment virtual methods
 public class AdminActivity extends AppCompatActivity implements CommunicatorManageAcc {
     private Data userData;
     private String name;
@@ -27,8 +29,8 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
     FragmentManager fm = getSupportFragmentManager();
 
     ArrayList<String> selectedStudents;
-
     private String currentUsername;
+    private ArrayList<QuizQuestion> questionList;
 
     private final static String ARG_CURRENT_USERNAME = "currentUsername";
 
@@ -39,8 +41,8 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
 
 //        setScreenTitle();
 //        setBtnManageAccListener();
-        btnCreateQuiz = findViewById(R.id.btnCreateQuiz);
-        btnAssignQuiz = findViewById(R.id.btnAssignQuiz);
+//        btnCreateQuiz = findViewById(R.id.btnCreateQuiz);
+//        btnAssignQuiz = findViewById(R.id.btnAssignQuiz);
 
         Intent intent = getIntent(); //TODO: put this code block into a function like setScreenTitle() ?
         if (intent.hasExtra(ARG_CURRENT_USERNAME)) {
@@ -49,8 +51,8 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
         }
 
         startHomeFragment();
-
     }
+
 
 //    public void setBtnManageAccListener(){
 //        btnManageAcc = findViewById(R.id.btnManageAcc);
@@ -82,6 +84,8 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
             case R.id.menu_home:
                 // Toast ....
                 //return true;
+                startHomeFragment(findViewById(R.id.fragment_container));
+                break;
             case R.id.menu_admin_name:
                 //return true;
             case R.id.menu_admin_logout:
@@ -130,9 +134,14 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
     }
 
     public void startManageAccountsFragment(View view) {
-        selectedStudents = new ArrayList<>();
         fm.beginTransaction()
-                .replace(R.id.fragment_container, AdminManageMainFragment.newInstance(currentUsername), null)
+                .replace(R.id.fragment_container, AdminManageMainFragment.newInstance(currentUsername), "accountManagerFrag")
+                .commit();
+    }
+
+    public void startCreateQuizFragment(View view) {
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, AdminCreateQuizFragment.newInstance(currentUsername), null)
                 .commit();
     }
 
@@ -143,7 +152,7 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
 
             //remove selected students from DB and update UI
             removeSelectedStudentsFromDB(selectedStudents);
-            startManageAccountsFragment(view); //TODO: hopefully updates UI?
+            startManageAccountsFragment(view.getRootView());
         }
     }
 

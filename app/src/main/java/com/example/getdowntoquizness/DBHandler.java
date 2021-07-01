@@ -5,10 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DBHandler extends SQLiteOpenHelper {
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // DATABASE VARIABLES //
+
     // Database Information
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "DBQuizTaker.db";
@@ -17,8 +21,13 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String USER_TABLE_NAME = "users";
     public static final String QUIZ_TABLE_NAME = "quizzes";
     public static final String QUESTION_TABLE_NAME = "questions";
+    public static final String STUDENT_QUIZ_STATS_TABLE_NAME = "student_quiz_stats";
+    public static final String STUDENT_QUESTION_STATS_TABLE_NAME = "student_question_stats";
 
-    // User Table Information
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // TABLE VARIABLES //
+
+    // User Table Columns
     public static final String USER_COLUMN_ID = "user_id"; //TODO: make into a common column named "id" for use in all tables?
     public static final String USER_COLUMN_NAME = "user_name";
     public static final String USER_COLUMN_USERNAME = "user_username";
@@ -30,13 +39,40 @@ public class DBHandler extends SQLiteOpenHelper {
     //TODO: add phone number column?
     //TODO: add quiz and grade columns
 
-    // Quiz Table Information
-    // TODO
+    // Quiz Table Columns
+    // TODO: do I need any more columns?
+    public static final String QUIZ_COLUMN_ID = "quiz_id";
+    public static final String QUIZ_COLUMN_NAME = "quiz_name";
+    public static final String QUIZ_COLUMN_TOPIC = "quiz_topic";
+    public static final String QUIZ_COLUMN_TIME_LIMIT = "quiz_time_limit";
 
-    // Question Table Information
-    // TODO
+    // Question Table Columns
+    public static final String QUESTION_COLUMN_ID = "question_id";
+    public static final String QUESTION_COLUMN_QUESTION_STATEMENT = "question_statement";
+    public static final String QUESTION_COLUMN_ANSWER_CHOICE_1 = "question_answer_choice_1";
+    public static final String QUESTION_COLUMN_ANSWER_CHOICE_2 = "question_answer_choice_2";
+    public static final String QUESTION_COLUMN_ANSWER_CHOICE_3 = "question_answer_choice_3";
+    public static final String QUESTION_COLUMN_ANSWER_CHOICE_4 = "question_answer_choice_4";
+    public static final String QUESTION_COLUMN_CORRECT_ANSWER = "question_correct_answer";
+    public static final String QUESTION_COLUMN_QUIZ_ID = "question_quiz_id";
 
-    // Table Create Statements
+    // Student-Quiz Stats Table Columns
+    public static final String STUDENT_QUIZ_STATS_COLUMN_ID = "student_quiz_stats_id";
+    public static final String STUDENT_QUIZ_STATS_COLUMN_IS_ASSIGNED = "student_quiz_stats_is_assigned";
+    public static final String STUDENT_QUIZ_STATS_COLUMN_GRADE = "student_quiz_stats_grade";
+    public static final String STUDENT_QUIZ_STATS_COLUMN_USERNAME = "student_quiz_stats_username";
+    public static final String STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID = "student_quiz_stats_quiz_id";
+
+    // Student-Question Stats Table Columns
+    public static final String STUDENT_QUESTION_STATS_COLUMN_ID = "student_question_stats_id";
+    public static final String STUDENT_QUESTION_STATS_COLUMN_QUESTION_ID = "student_question_stats_question_id";
+    public static final String STUDENT_QUESTION_STATS_COLUMN_USERNAME = "student_question_stats_username";
+    public static final String STUDENT_QUESTION_STATS_COLUMN_STUDENT_ANSWER = "student_question_stats_student_answer";
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // TABLE CREATE STATEMENTS //
+
+    // Create User Table Query
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + USER_TABLE_NAME + " ( " +
             USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             USER_COLUMN_NAME + " TEXT, " +
@@ -46,9 +82,42 @@ public class DBHandler extends SQLiteOpenHelper {
             USER_COLUMN_EMAIL + " TEXT, " +
             USER_COLUMN_IS_ADMIN + " BOOLEAN, " +
             USER_COLUMN_IS_SELECTED + " BOOLEAN )"; //TODO: add phone, quiz, and grade cols
-    //TODO: make create statement for quiz table
-    //TODO: make create statement for question table
 
+    // Create Quiz Table Query
+    private static final String CREATE_TABLE_QUIZZES = "CREATE TABLE " + QUIZ_TABLE_NAME + " ( " +
+            QUIZ_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            QUIZ_COLUMN_NAME + " TEXT, " +
+            QUIZ_COLUMN_TOPIC + " INTEGER, " +
+            QUIZ_COLUMN_TIME_LIMIT + " INTEGER )";
+
+    // Create Question Table Query
+    private static final String CREATE_TABLE_QUESTIONS = "CREATE TABLE " + QUESTION_TABLE_NAME + " ( " +
+            QUESTION_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            QUESTION_COLUMN_QUESTION_STATEMENT + " TEXT, " +
+            QUESTION_COLUMN_ANSWER_CHOICE_1 + " TEXT, " +
+            QUESTION_COLUMN_ANSWER_CHOICE_2 + " TEXT, " +
+            QUESTION_COLUMN_ANSWER_CHOICE_3 + " TEXT, " +
+            QUESTION_COLUMN_ANSWER_CHOICE_4 + " TEXT, " +
+            QUESTION_COLUMN_CORRECT_ANSWER + " TEXT, " +
+            QUESTION_COLUMN_QUIZ_ID + " INTEGER )";
+
+    // Create Student Quiz Stats Table Query
+    private static final String CREATE_TABLE_STUDENT_QUIZ_STATS = "CREATE TABLE " + STUDENT_QUIZ_STATS_TABLE_NAME + " ( " +
+            STUDENT_QUIZ_STATS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            STUDENT_QUIZ_STATS_COLUMN_IS_ASSIGNED + " BOOLEAN, " +
+            STUDENT_QUIZ_STATS_COLUMN_GRADE + " REAL, " +
+            STUDENT_QUIZ_STATS_COLUMN_USERNAME + " TEXT, " +
+            STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID + " INTEGER )";
+
+    // Create Student Question Stats Table Query
+    private static final String CREATE_TABLE_STUDENT_QUESTION_STATS = "CREATE TABLE " + STUDENT_QUESTION_STATS_TABLE_NAME + " ( " +
+            STUDENT_QUESTION_STATS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            STUDENT_QUESTION_STATS_COLUMN_QUESTION_ID + " INTEGER, " +
+            STUDENT_QUESTION_STATS_COLUMN_USERNAME + " TEXT, " +
+            STUDENT_QUESTION_STATS_COLUMN_STUDENT_ANSWER + " TEXT )";
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // DATABASE METHODS //
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,15 +130,24 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create the tables
         db.execSQL(CREATE_TABLE_USERS);
-        //TODO: insert other two create table statements
+        db.execSQL(CREATE_TABLE_QUIZZES);
+        db.execSQL(CREATE_TABLE_QUESTIONS);
+        db.execSQL(CREATE_TABLE_STUDENT_QUIZ_STATS);
+        db.execSQL(CREATE_TABLE_STUDENT_QUESTION_STATS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // On upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
-        //TODO: insert other two drop table statements
+        db.execSQL("DROP TABLE IF EXISTS " + QUIZ_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + QUESTION_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + STUDENT_QUIZ_STATS_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + STUDENT_QUESTION_STATS_TABLE_NAME);
     }
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // USER TABLE METHODS //
 
     public void initializeFirstAdmin() {
         // Add the first admin user
@@ -80,6 +158,14 @@ public class DBHandler extends SQLiteOpenHelper {
     public boolean isEmptyUserTable() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + USER_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+
+        return !cursor.moveToFirst();
+    }
+
+    public boolean isEmptyStudentUserTable() { //aka no students, but could have admins
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + USER_TABLE_NAME + " WHERE " + USER_COLUMN_IS_ADMIN + " = '" + 0 + "'";
         Cursor cursor = db.rawQuery(query, null);
 
         return !cursor.moveToFirst();
@@ -182,14 +268,15 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         ArrayList<HashMap<String, String>> studentsList = new ArrayList<>();
 
-        cursor.moveToFirst();
-        do {
-            HashMap<String, String> student = new HashMap<>();
-            student.put("name", cursor.getString(0));
-            student.put("username", cursor.getString(1));
-            studentsList.add(student);
-        } while (cursor.moveToNext());
-        cursor.close();
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> student = new HashMap<>();
+                student.put("name", cursor.getString(0));
+                student.put("username", cursor.getString(1));
+                studentsList.add(student);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
 
         db.close();
         return studentsList;
@@ -249,4 +336,136 @@ public class DBHandler extends SQLiteOpenHelper {
         System.out.println("selectedStudentsList: " + selectedStudentsList);
         return selectedStudentsList;
     }
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // QUIZ TABLE METHODS
+
+    //TODO: delete bc this is just for practice
+    // INSERT INTO QUIZ_TABLE_NAME (QUIZ_COLUMN_TOPIC) VALUES ('Science')
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // QUESTION TABLE METHODS
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // STUDENT QUIZ STATS TABLE METHODS
+
+    //TODO: delete bc this is just for practice
+    // INSERT INTO STUDENT_QUIZ_STATS_TABLE_NAME (STUDENT_QUIZ_STATS_COLUMN_GRADE, STUDENT_QUIZ_STATS_COLUMN_USERNAME,
+    // STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID) VALUES ('100', me, 0)
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // STUDENT QUESTION STATS TABLE METHODS
+
+//-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+    // JOIN TABLE METHODS
+
+    public double getIndividualOverallAverageHandler(String username) {
+        double totalGrade = 0;
+        String query = "SELECT AVG(" + STUDENT_QUIZ_STATS_COLUMN_GRADE + ") FROM " +
+                STUDENT_QUIZ_STATS_TABLE_NAME + " WHERE " + STUDENT_QUIZ_STATS_COLUMN_USERNAME +
+                " = '" + username + "' AND " + STUDENT_QUIZ_STATS_COLUMN_GRADE + " IS NOT NULL";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            totalGrade = cursor.getDouble(0);
+            cursor.close();
+        }
+
+        db.close();
+        return totalGrade;
+    }
+
+    public double getIndividualAverageForTopicHandler(String username, String topic) {
+        double topicGrade = 0;
+        String query = "SELECT AVG(s." + STUDENT_QUIZ_STATS_COLUMN_GRADE +
+                ") FROM " + STUDENT_QUIZ_STATS_TABLE_NAME + "AS s JOIN " + QUIZ_TABLE_NAME + " AS q ON q." +
+                QUIZ_COLUMN_ID + "= s." + STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID + "WHERE s." +
+                STUDENT_QUIZ_STATS_COLUMN_USERNAME + " = '" + username + "' AND q." + QUIZ_COLUMN_TOPIC  +
+                "= '" + topic + "' AND s." + STUDENT_QUIZ_STATS_COLUMN_GRADE + " IS NOT NULL";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            topicGrade = cursor.getDouble(0);
+            cursor.close();
+        }
+
+        db.close();
+        return topicGrade;
+
+    }
+
+    public double getClassAverageForTopicHandler(String topic) {
+        double topicGrade = 0;
+        String query = "SELECT AVG(s." + STUDENT_QUIZ_STATS_COLUMN_GRADE + ") FROM " +
+                STUDENT_QUIZ_STATS_TABLE_NAME + "AS s JOIN " + QUIZ_TABLE_NAME + " AS q ON q." +
+                QUIZ_COLUMN_ID + " = s." + STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID + " WHERE q." +
+                QUIZ_COLUMN_TOPIC + " = " + topic + " AND s." + STUDENT_QUIZ_STATS_COLUMN_GRADE + " IS NOT NULL";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            topicGrade = cursor.getDouble(0);
+            cursor.close();
+        }
+
+        db.close();
+        return topicGrade;
+    }
+
+    public double getClassAverageForQuizHandler(String quizName) {
+        double classAverage = 0;
+        String query = "SELECT AVG(s." + STUDENT_QUIZ_STATS_COLUMN_GRADE +") FROM " +
+                STUDENT_QUIZ_STATS_TABLE_NAME + " AS s JOIN " + QUIZ_TABLE_NAME + " AS q ON q." +
+                QUIZ_COLUMN_ID + " = s." + STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID + " WHERE q." +
+                QUIZ_COLUMN_NAME + " = '" + quizName + "' AND s." + STUDENT_QUIZ_STATS_COLUMN_GRADE + " IS NOT NULL";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            classAverage = cursor.getDouble(0);
+            cursor.close();
+        }
+
+        db.close();
+        return classAverage;
+    }
+
+    public double getHighestClassScoreForQuizHandler(String quizName) {
+        double classAverage = 0;
+        String query = "SELECT MAX(s." + STUDENT_QUIZ_STATS_COLUMN_GRADE +") FROM " +
+                STUDENT_QUIZ_STATS_TABLE_NAME + " AS s JOIN " + QUIZ_TABLE_NAME + " AS q ON q." +
+                QUIZ_COLUMN_ID + " = s." + STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID + " WHERE q." +
+                QUIZ_COLUMN_NAME + " = '" + quizName + "' AND s." + STUDENT_QUIZ_STATS_COLUMN_GRADE + " IS NOT NULL";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            classAverage = cursor.getDouble(0);
+            cursor.close();
+        }
+
+        db.close();
+        return classAverage;
+    }
+
+    public double getLowestClassScoreForQuizHandler(String quizName) {
+        double classAverage = 0;
+        String query = "SELECT MIN(s." + STUDENT_QUIZ_STATS_COLUMN_GRADE +") FROM " +
+                STUDENT_QUIZ_STATS_TABLE_NAME + " AS s JOIN " + QUIZ_TABLE_NAME + " AS q ON q." +
+                QUIZ_COLUMN_ID + " = s." + STUDENT_QUIZ_STATS_COLUMN_QUIZ_ID + " WHERE q." +
+                QUIZ_COLUMN_NAME + " = '" + quizName + "' AND s." + STUDENT_QUIZ_STATS_COLUMN_GRADE + " IS NOT NULL";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            classAverage = cursor.getDouble(0);
+            cursor.close();
+        }
+
+        db.close();
+        return classAverage;
+    }
+
 }

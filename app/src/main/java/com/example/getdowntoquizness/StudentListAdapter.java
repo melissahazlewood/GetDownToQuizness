@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class StudentListAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class StudentListAdapter extends RecyclerView.Adapter<StudentsListViewHolder> {
 
     Context context;
     private LayoutInflater inflater;
@@ -35,18 +34,18 @@ public class StudentListAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public StudentsListViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View v = inflater.inflate(viewType, parent, false);
 
 //        mListItemName = v.findViewById(R.id.txtStudent_list_name);
 //        mCheckBox = v.findViewById(R.id.checkBox_studentsList);
 
-        return new MyViewHolder(v);
+        return new StudentsListViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position)
+    public void onBindViewHolder(StudentsListViewHolder holder, int position)
     {
         try {
             // Clear previous selections (in DB, student list item object, and UI [which can be done with bindData()])
@@ -120,8 +119,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return studentList.size();
     }
 

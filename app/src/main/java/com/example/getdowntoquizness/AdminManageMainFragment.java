@@ -3,6 +3,8 @@ package com.example.getdowntoquizness;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,10 +65,8 @@ public class AdminManageMainFragment extends UserFragment {
         return new AdminManageMainFragment(UserFragment.newInstance(currentUsername));
     }
 
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO: show "no student data" if no student users in table
     }
 
 //    @Override
@@ -98,7 +98,6 @@ public class AdminManageMainFragment extends UserFragment {
             studentList.add(new StudentListItem(student.get("name"), false, student.get("username")));
         }
 
-        //TODO: why wont my recyclerview show up??
         StudentListAdapter adapter = new StudentListAdapter(this.getContext(), studentList);
         RecyclerView rv = view.findViewById(R.id.RV_studentsList);
         LinearLayoutManager llm =  new LinearLayoutManager(this.getActivity());
@@ -106,6 +105,10 @@ public class AdminManageMainFragment extends UserFragment {
         rv.setAdapter(adapter);
 
         return view;
+    }
+
+    public boolean studentsExist() {
+        return !getStudentsList().isEmpty();
     }
 
     public ArrayList<HashMap<String, String>> getStudentsList() {
@@ -133,16 +136,23 @@ public class AdminManageMainFragment extends UserFragment {
         super.onAttach(context);
 
         AdminActivity adminActivity;
+    }
 
-        if (context instanceof AdminActivity){
-            adminActivity = (AdminActivity) context;
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-            //TODO: turn this into a listener so it can update as changes are made
-//            adminActivity.selectedStudents = getSelectedStudents();
+        // Show "No Students" and hide the remove students button if there are no students registered
+        if (!studentsExist()) {
+            view.findViewById(R.id.tvNoStudents).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.btnRemoveStudent).setVisibility(View.INVISIBLE);
+        } else {
+            view.findViewById(R.id.tvNoStudents).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.btnRemoveStudent).setVisibility(View.VISIBLE);
         }
     }
 
-//    @Override
+    //    @Override
 //    public void onAttach(Context context) {
 //        super.onAttach(context);
 //

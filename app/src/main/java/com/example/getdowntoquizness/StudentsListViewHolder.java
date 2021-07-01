@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyViewHolder extends RecyclerView.ViewHolder{
+public class StudentsListViewHolder extends RecyclerView.ViewHolder {
 
     TextView tvStudentName;
     CheckBox checkBox;
 
-    public MyViewHolder(View itemView)
+    public StudentsListViewHolder(View itemView)
     {
         super(itemView);
 

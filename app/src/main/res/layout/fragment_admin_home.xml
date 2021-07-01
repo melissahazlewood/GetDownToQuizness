@@ -28,7 +28,8 @@
             android:layout_width="185dp"
             android:layout_height="wrap_content"
             android:text="Create a Quiz"
-            android:layout_below="@+id/btnManageAcc"/>
+            android:layout_below="@+id/btnManageAcc"
+            android:onClick="startCreateQuizFragment" />
         <Button
             android:id="@+id/btnAssignQuiz"
             android:layout_width="185dp"
