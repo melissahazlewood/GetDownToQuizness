@@ -2,23 +2,22 @@ package com.example.getdowntoquizness;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 public class AdminCreateQuizFragment extends UserFragment {
 
     private ArrayList<QuizQuestion> questionList = new ArrayList<>();
+
+    private Button mBtn_DoneCreatingQuiz;
 
     public AdminCreateQuizFragment(UserFragment fragment) {
         // Required empty public constructor
@@ -78,16 +77,32 @@ public class AdminCreateQuizFragment extends UserFragment {
         QuizQuestionsAdapter ca = new QuizQuestionsAdapter(getContext().getApplicationContext(), questionList);
         rv.setAdapter(ca);
 
-        view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.fab_addQuestion).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int questionListSize = questionList.size();
                 // Add a new question to the questionList
                 questionList.add(questionListSize -1, new QuizQuestion());
+                // TODO: change the question text to say the question number if possible
                 // Notify the adapter that the data has changed
                 rv.getAdapter().notifyItemInserted(questionListSize);
                 // Scroll to the bottom
                 rv.smoothScrollToPosition(questionListSize);
+            }
+        });
+
+        view.findViewById(R.id.fab_subtractQuestion).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int questionListSize = questionList.size();
+                if (questionListSize > 1) {
+                    // Remove the last question from questionList
+                    questionList.remove(questionListSize - 1); //TODO: make this into an option instead of hard coded to be the last one added
+                    rv.getAdapter().notifyItemRemoved(questionListSize - 1); //TODO: also make this variable (must match the number above though)
+                    rv.smoothScrollToPosition(questionListSize - 2);
+                } else {
+                    Toast.makeText(getContext(), "Quiz must have at least one question.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

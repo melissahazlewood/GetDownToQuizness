@@ -123,7 +123,7 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
 
     public void startHomeFragment() {
         fm.beginTransaction()
-                .add(R.id.fragment_container, AdminHomeFragment.newInstance(currentUsername), null)
+                .add(R.id.fragment_container, AdminHomeFragment.newInstance(currentUsername), "homeFrag")
                 .commit();
     }
 
@@ -184,6 +184,14 @@ public class AdminActivity extends AppCompatActivity implements CommunicatorMana
         });
 
         executor.shutdown();
+    }
+
+    public void doneCreatingQuiz(View view) {
+        // TODO: Store quiz details in database
+
+        // Return to home screen
+        startHomeFragment(view.getRootView());
+
     }
 
     @Override
