@@ -9,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GetDownToQuizness">
+        <activity android:name=".QuizTakingActivity"></activity>
         <activity android:name=".AdminActivity" />
         <activity android:name=".StudentActivity" />
-        <activity android:name=".SignupActivity"
-            android:windowSoftInputMode="stateUnchanged|adjustResize"/>
+        <activity
+            android:name=".SignupActivity"
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
