@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -86,20 +87,20 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 "^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z0-9\\s]{0,}$", R.string.name_error);
 
         //validates password: minimum 8 char, 1 letter, and 1 number
-//        mAwesomeValidation.addValidation(this, R.id.txtPassword,
-//                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", R.string.password_error);
+        mAwesomeValidation.addValidation(this, R.id.txtPassword,
+                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$", R.string.password_error);
 
         //validates retype password: same as password
-//        mAwesomeValidation.addValidation(this, R.id.txtRetypePassword,
-//                R.id.txtPassword, R.string.rePassword_error);
+        mAwesomeValidation.addValidation(this, R.id.txtRetypePassword,
+                R.id.txtPassword, R.string.rePassword_error);
 
         //validates email address: email format only
-//        mAwesomeValidation.addValidation(this, R.id.txtEmail, Patterns.EMAIL_ADDRESS,
-//                R.string.email_error);
+        mAwesomeValidation.addValidation(this, R.id.txtEmail, Patterns.EMAIL_ADDRESS,
+                R.string.email_error);
 
         //validates phone number: phone number format only
-//        mAwesomeValidation.addValidation(this,R.id.txtPhone, "^[+]?[0-9]{10,13}$",
-//                R.string.phone_error);
+        mAwesomeValidation.addValidation(this,R.id.txtPhone, "^[+]?[0-9]{10,13}$",
+                R.string.phone_error);
         m_btnSignMeUp.setOnClickListener(this);//sets listener on sign me up button.
     }
     //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
