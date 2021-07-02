@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +22,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class NewTopicDialogFragment extends DialogFragment {
-
+    public static String topic;
+    private TextView txtVNewTopic;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -77,7 +80,9 @@ public class NewTopicDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_topic_dialog, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_topic_dialog, container, false);
+        txtVNewTopic = view.findViewById(R.id.txtNewTopic);
+        return view;
     }
 
     @Override
@@ -86,6 +91,8 @@ public class NewTopicDialogFragment extends DialogFragment {
         // Get the layout inflater
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
+        final EditText input = new EditText(getContext());
+        builder.setView(input);
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater.inflate(R.layout.fragment_new_topic_dialog, null))
@@ -96,6 +103,7 @@ public class NewTopicDialogFragment extends DialogFragment {
 //                        String newTopic = getActivity().findViewById(R.id.txtNewTopic).toString();
                         try {
                             listener.onDialogPositiveClick(NewTopicDialogFragment.this);//, newTopic);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

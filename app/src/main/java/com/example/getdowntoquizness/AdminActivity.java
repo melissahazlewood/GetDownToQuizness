@@ -62,7 +62,6 @@ public class AdminActivity extends OptionsMenuActivityAdmin implements Communica
 
         quizQuestionList = new ArrayList<>();
         topicList = new ArrayList<>();
-
         if (savedInstanceState != null) {
             setQuizQuestionList(savedInstanceState.getParcelableArrayList(ARG_QUIZ_QUESTION_LIST));
             quizName = savedInstanceState.getString(ARG_QUIZ_NAME);

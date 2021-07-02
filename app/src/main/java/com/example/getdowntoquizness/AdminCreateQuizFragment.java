@@ -59,6 +59,7 @@ public class AdminCreateQuizFragment extends UserFragment implements AdapterView
     public static  AdminCreateQuizFragment newInstance(String currentUsername, ArrayList<String> topicList) {
         AdminCreateQuizFragment fragment = new AdminCreateQuizFragment(UserFragment.newInstance(currentUsername));
         fragment.topicList = topicList;
+        System.out.println("TOPICLIST: " + topicList);
 
         return fragment;
     }
@@ -130,6 +131,9 @@ public class AdminCreateQuizFragment extends UserFragment implements AdapterView
 
             topicList = new ArrayList<String>();
             topicList.add("New Topic");
+            if(NewTopicDialogFragment.topic != null){
+                topicAdapter.add(NewTopicDialogFragment.topic);
+            }
             System.out.println("getArguments(): " + getArguments());
             System.out.println("savedInstanceState: " + savedInstanceState);
         } else {
